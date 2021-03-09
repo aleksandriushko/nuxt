@@ -1,0 +1,38 @@
+{
+  "links": {
+    "home": "Главная",
+    "login": "Войти",
+    "register": "Регистрация",
+    "logout": "Выйти",
+    "en": "en",
+    "ru": "ru",
+    "about": "О нас"
+  },
+  "login": {
+    "title": "Вход",
+    "description": "Введите данные в форму, для входа на сайт",
+    "placeholderPassword": "Пароль",
+    "btnRegistration": "Зарегистрироваться",
+    "btnLogin": "Войти",
+    "btnGoHome": "На главную"
+  },
+  "register": {
+    "title": "Регистрация",
+    "description": "Заполните данные для регистрации на сайте",
+    "placeholderName": "Имя",
+    "placeholderPassword": "Пароль",
+    "btnLogin": "Войти",
+    "btnRegistration": "Зарегистрироваться",
+    "btnGoHome": "На главную"
+  },
+  "home": {
+    "title": "Главная"
+  },
+  "about": {
+    "title": "О нас",
+    "introduction": "Эта страница создана, чтобы дать вам больше информации."
+  },
+  "layout": {
+    "topBarTitle": "Приложение"
+  }
+}

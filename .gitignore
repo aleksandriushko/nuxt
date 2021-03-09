@@ -79,6 +79,7 @@ dist
 
 # IDE / Editor
 .idea
+.history/
 
 # Service worker
 sw.*
@@ -88,3 +89,7 @@ sw.*
 
 # Vim swap files
 *.swp
+
+#custom
+todo.txt
+pages/_lang/

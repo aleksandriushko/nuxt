@@ -1,0 +1,38 @@
+{
+  "links": {
+    "home": "Home",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "en": "en",
+    "ru": "ru",
+    "about": "About"
+  },
+  "login": {
+    "title": "Login",
+    "description": "Enter the data in the form to enter the site",
+    "placeholderPassword": "Password",
+    "btnRegistration": "Registration",
+    "btnLogin": "Login",
+    "btnGoHome": "Go Home"
+  },
+  "register": {
+    "title": "Register",
+    "description": "Fill in the data for registration on the site",
+    "placeholderName": "Name",
+    "placeholderPassword": "Password",
+    "btnLogin": "Login",
+    "btnRegistration": "Registration",
+    "btnGoHome": "Go Home"
+  },
+  "home": {
+    "title": "Home"
+  },
+  "about": {
+    "title": "About",
+    "introduction": "This page is made to give you more informations."
+  },
+  "layout": {
+    "topBarTitle": "Application"
+  }
+}
