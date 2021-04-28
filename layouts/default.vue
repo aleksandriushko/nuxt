@@ -1,9 +1,6 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer
-      v-model="drawer"
-      app
-    >
+    <v-navigation-drawer v-model="drawer" app >
       <v-list dense>
         <v-list-item link :to="$i18n.path('')">
           <v-list-item-action>
@@ -24,11 +21,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar
-      app
-      color="indigo"
-      dark
-    >
+    <v-app-bar app color="indigo" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{ $t('layout.topBarTitle') }}</v-toolbar-title>
 
@@ -46,25 +39,15 @@
     </v-app-bar>
 
     <v-main>
-      <v-container
-        class="fill-height"
-        fluid
-      >
-        <v-row
-          align="center"
-          justify="center"
-        >
+      <v-container class="fill-height" fluid>
+        <v-row align="center" justify="center">
           <v-col class="text-center">
             <Nuxt />
-            <Snackbar />
           </v-col>
         </v-row>
       </v-container>
     </v-main>
-    <v-footer
-      color="indigo"
-      app
-    >
+    <v-footer color="indigo" app>
       <span class="white--text">&copy; {{ new Date().getFullYear() }}</span>
       <a @click="testBtn">testBtn</a>
     </v-footer>
@@ -74,9 +57,9 @@
 <script>
   import { auth } from "@/services/firebase";
   import Cookie from "js-cookie";
-  import Snackbar from '@/components/Snackbar'
 
   export default {
+    name: "default",
     data: () => ({
       drawer: null
     }),
@@ -113,7 +96,7 @@
       }
     },
     components: {
-      Snackbar
+      // Snackbar
     }
   }
 </script>

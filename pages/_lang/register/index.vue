@@ -8,26 +8,52 @@
           <div class="subheading">
             <template>{{ $t('register.description') }}</template>
           </div>
-          <v-form>
+          <validation-observer ref="validator">
+            <v-form>
 
-            <validation-provider rules="required" v-slot="{ errors }">
-              <v-text-field v-model="account.name" prepend-icon="mdi-user" :label="$t('register.placeholderName')" type="text"></v-text-field>
-              <span>{{ errors[0] }}</span>
-            </validation-provider>
+              <validation-provider v-slot="{ errors }" name="email" rules="required">
+                <v-text-field
+                  v-model="account.name"
+                  :error-messages="errors"
+                  prepend-icon="mdi-user"
+                  :label="$t('register.placeholderName')"
+                  type="text"
+                  required />
+              </validation-provider>
 
-            <v-text-field v-model="account.email" prepend-icon="mdi-email" label="Email" type="email"></v-text-field>
 
-            <validation-provider mode="eager" rules="required|email" v-slot="{ errors }" id="password">
-              <v-text-field v-model="account.password" prepend-icon="mdi-lock" :label="$t('login.placeholderPassword')" type="password"></v-text-field>
-              <span>{{ errors[0] }}</span>
-            </validation-provider>
+              <validation-provider v-slot="{ errors }" name="email" rules="required|email" >
+                <v-text-field
+                  v-model="account.email"
+                  :error-messages="errors"
+                  label="E-mail"
+                  type="email"
+                  prepend-icon="mdi-email"
+                  required
+                  @input="isError = false"
+                />
+              </validation-provider>
+              <validation-provider v-slot="{ errors }" name="password" rules="required">
+                <v-text-field
+                  v-model="account.password"
+                  :error-messages="errors"
+                  :label="$t('register.placeholderPassword')"
+                  :type="showPassword ? 'text' : 'password'"
+                  :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+                  @click:append="showPassword = !showPassword"
+                  prepend-icon="mdi-lock"
+                  counter="true"
+                  @input="isError = false"
+                  required
+                />
+              </validation-provider>
+            </v-form>
 
-            <v-alert
-              color="red"
-              type="error"
-              v-if="isError"
-            >{{ errMsg }}</v-alert>
-          </v-form>
+            <div class="v-messages error--text ml-8" role="alert" v-if="isError">
+                  {{ errMsg }}
+            </div>
+          </validation-observer>
+
         </v-card-text>
         <v-card-actions>
           <v-col class="text-left">
@@ -54,48 +80,18 @@
 
 
 <script>
-// import { ValidationProvider, extend } from 'vee-validate'
-// import { required } from 'vee-validate/dist/rules'
 
 import { required, email, max } from 'vee-validate/dist/rules'
-import { extend, ValidationObserver, ValidationProvider, setInteractionMode } from 'vee-validate'
+import { extend, ValidationObserver, ValidationProvider, setInteractionMode, localize } from 'vee-validate'
+import en from '~/lang/validation/en.json';
+import ru from '~/lang/validation/ru.json';
 
 setInteractionMode('eager')
 
-extend('required', {
-  ...required,
-  message: '{_field_} can not be empty',
-})
+extend("required", required);
+extend("email", email);
 
-
-// extend('required', {
-//   ...required,
-//   message: 'This field {_field_} is required 111'
-// })
-
-// extend('custPass1', value => {
-//   if(value < 4) {
-//     return true
-//   }
-//   return 'This field {_field_} is required 222'
-// })
-
-// extend('custPass2', {
-//   validate: value => {
-//     return value > 4
-//   },
-//   message: 'The {_field_} must be between  digits'
-// });
-
-extend('minmax', {
-  validate(value, { min, max }) {
-    return value.length >= min && value.length <= max;
-  },
-  params: ['min', 'max'],
-  message: (fieldName, placeholders) => {
-    return `The ${fieldName} field must have at least ${placeholders.min} characters and ${placeholders.max} characters at most`;
-  }
-});
+localize('en', en);
 
 
 export default {
@@ -108,32 +104,52 @@ export default {
       name: ''
     },
     isError: false,
+    showPassword: false,
+    errors: null,
     errMsg: ''
   }),
+
+  computed: {
+    locale: function() {
+      return this.$store.getters.locale
+    }
+  },
+  watch: {
+    // for disable submit when no valid (2 of 3)
+    'account': {
+      deep: true,
+      handler: function() {
+        this.updateFormValidity();
+      }
+    },
+    locale(lang) {
+      if(lang === 'en') {
+        localize('en', en);
+      } else if(lang === 'ru') {
+        localize('ru', ru);
+      }
+    }
+  },
   methods: {
-    changeLang (lang) {
-      //mutate 'locale' in store
-      this.$store.commit('SET_LANG', lang)
-      //re-route to the current page but with the selected language in a query string
-      // this.$router.push({ path: `${this.$router.currentRoute.path}?lang=${lang}` })
+    async updateFormValidity() {
+      this.isValid = await this.$refs.validator.validate({
+        silent: true // Validate silently and don't cause observer errors to be updated. We only need true/false. No side effects.
+      })
     },
     register() {
-      this.$store
-        .dispatch('users/register', this.account)
-        .then(() => {
-          this.$router.push('/')
-        })
+      this.$store.dispatch('users/register', this.account)
+        .then(() => this.$router.push('/'))
         .catch(error => {
-          this.isError = true
-          this.errMsg = error.code
-          setTimeout(() => {
-              this.isError = false
-          }, 5000)
+          if(error.code === "auth/email-already-in-use") {
+            this.isError = true
+            this.errMsg = this.$t('register.errors.auth/email-already-in-use')
+          }
         })
     }
   },
   components: {
-    ValidationProvider
+    ValidationProvider,
+    ValidationObserver,
   },
 }
 </script>

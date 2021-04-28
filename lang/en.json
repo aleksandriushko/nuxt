@@ -14,7 +14,10 @@
     "placeholderPassword": "Password",
     "btnRegistration": "Registration",
     "btnLogin": "Login",
-    "btnGoHome": "Go Home"
+    "btnGoHome": "Go Home",
+    "errors": {
+      "auth/user-not-found": "Password or email is incorrect"
+    }
   },
   "register": {
     "title": "Register",
@@ -23,7 +26,10 @@
     "placeholderPassword": "Password",
     "btnLogin": "Login",
     "btnRegistration": "Registration",
-    "btnGoHome": "Go Home"
+    "btnGoHome": "Go Home",
+    "errors": {
+      "auth/email-already-in-use": "User with this email already exists"
+    }
   },
   "home": {
     "title": "Home"

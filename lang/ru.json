@@ -14,7 +14,10 @@
     "placeholderPassword": "Пароль",
     "btnRegistration": "Зарегистрироваться",
     "btnLogin": "Войти",
-    "btnGoHome": "На главную"
+    "btnGoHome": "На главную",
+    "errors": {
+      "auth/user-not-found": "Пароль или email указанны не верно"
+    }
   },
   "register": {
     "title": "Регистрация",
@@ -23,7 +26,10 @@
     "placeholderPassword": "Пароль",
     "btnLogin": "Войти",
     "btnRegistration": "Зарегистрироваться",
-    "btnGoHome": "На главную"
+    "btnGoHome": "На главную",
+    "errors": {
+      "auth/email-already-in-use": "Пользователь с таким email уже существует"
+    }
   },
   "home": {
     "title": "Главная"
