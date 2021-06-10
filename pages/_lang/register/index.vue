@@ -4,65 +4,66 @@
         <v-icon class="mr-2" large="large">mdi-account</v-icon>{{ $t('register.title') }}
       </div>
       <v-card light="light">
-        <v-card-text>
-          <div class="subheading">
-            <template>{{ $t('register.description') }}</template>
-          </div>
-          <validation-observer ref="validator">
-            <v-form>
-
-              <validation-provider v-slot="{ errors }" name="email" rules="required">
-                <v-text-field
-                  v-model="account.name"
-                  :error-messages="errors"
-                  prepend-icon="mdi-user"
-                  :label="$t('register.placeholderName')"
-                  type="text"
-                  required />
-              </validation-provider>
-
-
-              <validation-provider v-slot="{ errors }" name="email" rules="required|email" >
-                <v-text-field
-                  v-model="account.email"
-                  :error-messages="errors"
-                  label="E-mail"
-                  type="email"
-                  prepend-icon="mdi-email"
-                  required
-                  @input="isError = false"
-                />
-              </validation-provider>
-              <validation-provider v-slot="{ errors }" name="password" rules="required">
-                <v-text-field
-                  v-model="account.password"
-                  :error-messages="errors"
-                  :label="$t('register.placeholderPassword')"
-                  :type="showPassword ? 'text' : 'password'"
-                  :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-                  @click:append="showPassword = !showPassword"
-                  prepend-icon="mdi-lock"
-                  counter="true"
-                  @input="isError = false"
-                  required
-                />
-              </validation-provider>
-            </v-form>
-
-            <div class="v-messages error--text ml-8" role="alert" v-if="isError">
-                  {{ errMsg }}
+        <v-form>
+          <v-card-text>
+            <div class="subheading">
+              <template>{{ $t('register.description') }}</template>
             </div>
-          </validation-observer>
+            <validation-observer ref="validator">
 
-        </v-card-text>
-        <v-card-actions>
-          <v-col class="text-left">
-            <v-btn large link text :to="$i18n.path('login')" color="primary" class="reg-btn">{{ $t('register.btnLogin') }}</v-btn>
-          </v-col>
-          <v-col class="text-right">
-            <v-btn large color="primary" class="white--text" @click.prevent="register">{{ $t('register.btnRegistration') }}</v-btn>
-          </v-col>
-        </v-card-actions>
+                <validation-provider v-slot="{ errors }" name="username" rules="required">
+                  <v-text-field
+                    v-model="account.username"
+                    :error-messages="errors"
+                    prepend-icon="mdi-user"
+                    :label="$t('register.placeholderUsername')"
+                    type="text"
+                    required />
+                </validation-provider>
+
+
+                <validation-provider v-slot="{ errors }" name="email" rules="required|email" >
+                  <v-text-field
+                    v-model="account.email"
+                    :error-messages="errors"
+                    label="E-mail"
+                    type="email"
+                    prepend-icon="mdi-email"
+                    required
+                    @input="isError = false"
+                  />
+                </validation-provider>
+                <validation-provider v-slot="{ errors }" name="password" rules="required">
+                  <v-text-field
+                    v-model="account.password"
+                    :error-messages="errors"
+                    :label="$t('register.placeholderPassword')"
+                    :type="showPassword ? 'text' : 'password'"
+                    :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+                    @click:append="showPassword = !showPassword"
+                    prepend-icon="mdi-lock"
+                    counter="true"
+                    @input="isError = false"
+                    required
+                  />
+                </validation-provider>
+
+              <div class="v-messages error--text ml-8" role="alert" v-if="isError">
+                    {{ errMsg }}
+              </div>
+            </validation-observer>
+
+          </v-card-text>
+          <v-card-actions>
+            <v-col class="text-left">
+              <v-btn large link text :to="$i18n.path('login')" color="primary" class="reg-btn">{{ $t('register.btnLogin') }}</v-btn>
+            </v-col>
+            <v-col class="text-right">
+              <v-btn large color="primary" type="submit" class="white--text" @click.prevent="register">{{ $t('register.btnRegistration') }}</v-btn>
+            </v-col>
+          </v-card-actions>
+        </v-form>
+
       </v-card>
       <div>
         <v-btn link text :to="$i18n.path('')" class="mt-2">
@@ -101,7 +102,7 @@ export default {
     account: {
       email: '',
       password: '',
-      name: ''
+      username: ''
     },
     isError: false,
     showPassword: false,

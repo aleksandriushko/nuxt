@@ -13,6 +13,7 @@
     "description": "Введите данные в форму, для входа на сайт",
     "placeholderPassword": "Пароль",
     "btnRegistration": "Зарегистрироваться",
+    "btnForgot": "Забыли пароль?",
     "btnLogin": "Войти",
     "btnGoHome": "На главную",
     "errors": {
@@ -22,13 +23,22 @@
   "register": {
     "title": "Регистрация",
     "description": "Заполните данные для регистрации на сайте",
-    "placeholderName": "Имя",
+    "placeholderUsername": "Username",
     "placeholderPassword": "Пароль",
     "btnLogin": "Войти",
     "btnRegistration": "Зарегистрироваться",
     "btnGoHome": "На главную",
     "errors": {
       "auth/email-already-in-use": "Пользователь с таким email уже существует"
+    }
+  },
+  "forgot": {
+    "title": "Забыли пароль?",
+    "description": "Введите адрес электронной почты на который будет выслано письмо с востановлением",
+    "btnForgot": "Отправить",
+    "emailSendSuccess": "Электронное письмо с инструкциями отправлено",
+    "errors": {
+      "auth/user-not-found": "Электронное письмо с инструкциями отправлено"
     }
   },
   "home": {

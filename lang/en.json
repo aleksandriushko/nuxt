@@ -13,6 +13,7 @@
     "description": "Enter the data in the form to enter the site",
     "placeholderPassword": "Password",
     "btnRegistration": "Registration",
+    "btnForgot": "Forgot password?",
     "btnLogin": "Login",
     "btnGoHome": "Go Home",
     "errors": {
@@ -22,13 +23,22 @@
   "register": {
     "title": "Register",
     "description": "Fill in the data for registration on the site",
-    "placeholderName": "Name",
+    "placeholderUsername": "Username",
     "placeholderPassword": "Password",
     "btnLogin": "Login",
     "btnRegistration": "Registration",
     "btnGoHome": "Go Home",
     "errors": {
       "auth/email-already-in-use": "User with this email already exists"
+    }
+  },
+  "forgot": {
+    "title": "Forgot password?",
+    "description": "Enter the email address to which the recovery letter will be sent",
+    "btnForgot": "Send",
+    "emailSendSuccess": "Email with instruction sended",
+    "errors": {
+      "auth/user-not-found": "Email don't found"
     }
   },
   "home": {

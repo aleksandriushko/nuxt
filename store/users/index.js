@@ -32,12 +32,6 @@ export const actions = {
       // Set the user locally
       commit("SET_USER", { email, uid });
     } catch (error) {
-      // commit("SET_ERROR", error, { root: true });
-
-      // setTimeout(() => {
-      //   commit("CLEAR_ERROR", "", { root: true });
-      // }, 3000);
-
       throw error;
     }
   },
@@ -60,18 +54,18 @@ export const actions = {
       await commit("SET_USER", { email, uid });
 
       // remove этот коммент - это тест, в базе создается юзер с каким-то хэшом, и в него добавляется сво-во info в которкю падает объект
-      // await database.ref(`/users/${uid}/info`).set({
-      //     test: 111,
-      //     name: account.name
-      // })
+      await database.ref(`/users/${uid}/info`).set({
+        role: "USER",
+        username: account.username
+      });
     } catch (error) {
-      // remove этот коммент - сначала сделал через вплывалку, но потом решил указать в блоке рядом с формой
-      // commit("SET_ERROR", error, { root: true });
-
-      // setTimeout(() => {
-      //   commit("CLEAR_ERROR", "", { root: true });
-      // }, 3000);
-
+      throw error;
+    }
+  },
+  async forgot({ dispatch, commit }, account) {
+    try {
+      await auth.sendPasswordResetEmail(account.email);
+    } catch (error) {
       throw error;
     }
   }

@@ -1,13 +1,14 @@
 <template>
-  <v-flex class="login-form text-center">
+  <v-flex class="forgot-form text-center">
     <div class="display-1 mb-3">
-      <v-icon class="mr-2" large="large">mdi-account</v-icon> {{ $t('login.title') }}
+      <v-icon class="mr-2" large="large">mdi-account</v-icon> {{ $t('forgot.title') }}
     </div>
     <v-card light="light">
-      <form @submit="login">
+      <form @submit="forgot">
+
         <v-card-text>
           <div class="subheading">
-            <template>{{ $t('login.description') }}</template>
+            <template>{{ $t('forgot.description') }}</template>
           </div>
           <validation-observer ref="validator">
               <validation-provider v-slot="{ errors }" name="email" rules="required|email" >
@@ -21,23 +22,18 @@
                   @input="isError = false"
                 />
               </validation-provider>
-              <validation-provider v-slot="{ errors }" name="password" rules="required">
-                <v-text-field
-                  v-model="account.password"
-                  :error-messages="errors"
-                  :label="$t('login.placeholderPassword')"
-                  :type="showPassword ? 'text' : 'password'"
-                  :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-                  @click:append="showPassword = !showPassword"
-                  prepend-icon="mdi-lock"
-                  counter="true"
-                  @input="isError = false"
-                  required
-                />
-              </validation-provider>
             <div class="v-messages error--text ml-8" role="alert" v-if="isError">
-                  {{ errMsg }}
+              {{ errMsg }}
             </div>
+            <v-progress-circular
+              v-if="emailSending"
+              indeterminate
+              color="primary"
+            ></v-progress-circular>
+            <div v-if="emailSendSuccess">
+              {{ $t('forgot.emailSendSuccess') }}
+            </div>
+
           </validation-observer>
         </v-card-text>
         <v-card-actions>
@@ -45,10 +41,10 @@
             <v-btn large link text :to="$i18n.path('register')" color="primary" class="reg-btn">{{ $t('login.btnRegistration') }}</v-btn>
           </v-col>
           <v-col class="text-left">
-            <v-btn large link text :to="$i18n.path('forgot')" color="primary" class="reg-btn">{{ $t('login.btnForgot') }}</v-btn>
+            <v-btn large link text :to="$i18n.path('login')" color="primary" class="reg-btn">{{ $t('register.btnLogin') }}</v-btn>
           </v-col>
           <v-col class="text-right">
-            <v-btn large color="primary" type="submit" class="white--text" @click.prevent="login" :disabled="!isValid">{{ $t('login.btnLogin') }}</v-btn>
+            <v-btn large color="primary" type="submit" class="white--text" @click.prevent="forgot" :disabled="!isValid">{{ $t('forgot.btnForgot') }}</v-btn>
           </v-col>
 
         </v-card-actions>
@@ -89,15 +85,14 @@ export default {
   data: () => ({
       account: {
         email: '',
-        password: ''
       },
       isError: false,
-      // errMsg: '',
-      showPassword: false,
-      // invalid: false,
       errors: null,
 
       isValid: false, // for disable submit when no valid (1 of 3)
+
+      emailSending: false,
+      emailSendSuccess: false,
   }),
   computed: {
     locale: function() {
@@ -139,16 +134,21 @@ export default {
 
       // console.log('Object.keys(this.fields)', this.$validator)
     },
-    login(e) {
-      // TODO: add parsing of data.
-      this.$store.dispatch('users/login', this.account)
-        .then(() => this.$router.push('/admin'))
+    forgot(e) {
+      if(this.emailSending) return
+      this.emailSending = true
+      this.$store.dispatch('users/forgot', this.account)
+        .then(() => {
+          this.emailSending = false
+          this.emailSendSuccess = true
+          // this.$router.push('/login')
+        })
         .catch(error => {
-          console.log('error aaa', error)
-
-          if(error.code === "auth/user-not-found" || error.code === "auth/wrong-password") {
+          this.emailSending = false
+          // console.log('error aaa222', error)
+          if(error.code === "auth/user-not-found") {
             this.isError = true
-            this.errMsg = this.$t('login.errors.auth/user-not-found')
+            this.errMsg = this.$t('forgot.errors.auth/user-not-found')
           }
         })
     },
@@ -161,7 +161,7 @@ export default {
 </script>
 
 <style scoped>
-  .login-form {
+  .forgot-form {
     max-width: 500px;
   }
   .reg-btn {
