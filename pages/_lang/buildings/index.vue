@@ -1,14 +1,24 @@
 <template>
   <div class="Content">
     <div class="container">
+
+      <v-btn small class="_edit-building" @click="dialogAdd('production')">
+        {{ $t('buildings.addProdBuilding') }}
+      </v-btn>
+
+      <v-btn small class="_edit-building" @click="dialogSpec = true">
+        {{ $t('buildings.addSpecBuilding') }}
+      </v-btn>
+
       <h1 class="Content__Title">
         {{ $t('buildings.title') }}
       </h1>
 
       <div v-if="buildingsLoaded" class="buildings-wrap">
-        <div v-for="item in buildings" :key="item.id" class="building">
+        <div v-for="item in sortBuildings" :key="item.id" class="building">
           <NuxtLink :to="`/buildings/${item.slug}`" class="img-link"><img :src="item.images.icon.url" alt="" v-if="item.images.icon.url"></NuxtLink>
           <NuxtLink :to="`/buildings/${item.slug}`" class="text-link">{{ item.name.en }}</NuxtLink>
+          <div class="level-text">{{ item.requiredLevel }}</div>
           <v-btn small class="edit-building" @click="dialogEdit(item.slug)">
             <v-icon color="primary">
               mdi-pencil
@@ -17,23 +27,9 @@
         </div>
       </div>
 
-      <v-btn small class="edit-building" @click="dialogAdd()">
-        {{ $t('buildings.addBuilding') }}
-      </v-btn>
 
       <v-dialog v-model="dialog" persistent max-width="800px">
-        <!-- <template v-slot:activator="{ on, attrs }"> -->
-          <!-- <v-btn v-bind="attrs" v-on="on">
-
-          </v-btn> -->
-
-
-        <!-- </template> -->
-
-
-
         <v-card>
-          <!-- <v-card-title><span class="text-h5">User Profile</span>/v-card-title> -->
           <v-stepper v-model="e1">
             <v-stepper-header>
               <v-stepper-step :complete="e1 > 1" step="1" editable>
@@ -97,7 +93,6 @@
                     <v-row>
                       <v-col cols="12">
                         <v-textarea
-                          class="mx-2"
                           :label="$t('buildings.labelDescriptionEn')"
                           rows="1"
                           v-model="building.description.en"
@@ -105,7 +100,6 @@
                       </v-col>
                       <v-col cols="12">
                         <v-textarea
-                          class="mx-2"
                           :label="$t('buildings.labelDescriptionRu')"
                           rows="1"
                           v-model="building.description.ru"
@@ -188,52 +182,12 @@
                     <v-row>
                       <v-col cols="12" sm="12" md="12">
                         {{ $t('buildings.labelImageIcon') }}
-                        <v-row>
-                          <v-col cols="6" sm="6" md="6">
-                            <v-text-field v-model="building.images.icon.url" :label="'i18n icon'" />
-
-                            <!-- <v-file-input accept="image/*" @change="previewImage($event, 'icon')" label="File input"/> -->
-                            <!-- <p>Progress: {{ uploadValue.toFixed() + "%" }} -->
-                            <!-- <progress id="progress" :value="uploadValue" max="100" ></progress>  </p> -->
-                          </v-col>
-                          <v-col cols="4" sm="4" md="4">
-                            <v-btn @click="onUpload('icon')">
-                              {{ $t('buildings.uploadBtnName') }}
-                            </v-btn>
-                          </v-col>
-                          <v-col cols="2" sm="2" md="2">
-                            <!-- <template v-if="building.images.icon.url"> -->
-                              <!-- <img class="preview" :src="building.images.icon.url"> -->
-                            <!-- </template> -->
-                            <!-- <template v-else> -->
-                              <!-- <img v-if="images.icon.imageData != null" class="preview" :src="images.icon.picture"> -->
-                            <!-- </template> -->
-                          </v-col>
-                        </v-row>
+                        <v-text-field v-model="building.images.icon.url" :label="'i18n icon'" />
                       </v-col>
 
                       <v-col cols="12" sm="12" md="12" v-for="item in 7" :key="item">
                         {{ $t('buildings.labelImage') + ` ${item}` }}
                         <v-text-field v-model="building.images[`image${item}`].url" :label="'i18n image'" />
-
-                        <!-- <v-row>
-                          <v-col cols="6" sm="6" md="6">
-                            <v-file-input accept="image/*" @change="previewImage($event, `image${item}`)" label="File input"/>
-                          </v-col>
-                          <v-col cols="4" sm="4" md="4">
-                            <v-btn @click="onUpload(`image${item}`)">
-                              {{ $t('buildings.uploadBtnName') }}
-                            </v-btn>
-                          </v-col>
-                          <v-col cols="2" sm="2" md="2">
-                            <template v-if="building.images[`image${item}`].url">
-                              <img class="preview" :src="building.images[`image${item}`].url">
-                            </template>
-                            <template v-else>
-                              <img v-if="images[`image${item}`].imageData != null" class="preview" :src="images[`image${item}`].picture">
-                            </template>
-                          </v-col>
-                        </v-row> -->
                       </v-col>
                     </v-row>
                   </v-container>
@@ -256,9 +210,6 @@
                       :menu-props="{ maxHeight: '400' }"
                       :label="$t('buildings.labelProductionResourceSlug')"
                     >
-                      <!-- <template slot="selection" v-slot:selection="data"> -->
-                        <!-- {{ data.item.name }} -->
-                      <!-- </template> -->
                       <template v-slot:item="data">
                         <img :src="getResourceIconUrl(data.item)" alt="">
                         {{ data.item }}
@@ -460,27 +411,31 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <button @click="test">test</button>
+      <dialogSpecialBuilding :dialog="dialogSpec" :resources="resources" :editingSpecBuilding="editingSpecBuilding" :dialogCurrent="dialogCurrent"  @clicked="onDialogSpec" />
+      <!-- <button @click="test">test</button> -->
     </div>
   </div>
 </template>
 
 <script>
-import firebase from 'firebase';
+import dialogSpecialBuilding from '@/components/elements/dialogSpecialBuilding'
 
 export default {
   head() {
     return { title: this.$t('buildings.title') }
   },
+  components: {
+    dialogSpecialBuilding
+  },
   data() {
     return {
       originList: ['basic', 'someOne'],
       currentOrigins: ['basic'],
-      typeList: ['workshop', 'someOne'],
-      currentTypes: ['workshop'],
+      typeList: ['workshop', 'special'], // special mean's whan no have some type building evryware
+      // currentTypes: ['workshop'],
+      currentTypes: ['special'],
 
       building: {
-        id: null,
         slug: 'mason',
         name: {
           default: 'Mason',
@@ -528,7 +483,7 @@ export default {
           amount: 1,
         },
         consumptionResource1: {
-          slug: 'shoal',
+          slug: 'stone-deposit',
           amount: 1,
         },
         size: {
@@ -821,56 +776,8 @@ export default {
 
       dialog: false,
 
-      images: {
-        icon: {
-          name: 'icon',
-          imageData: null,
-          picture: null,
-          uploadValue: 0,
-        },
-        image1: {
-          name: '1',
-          imageData: null,
-          picture: null,
-          uploadValue: 0,
-        },
-        image2: {
-          name: '2',
-          imageData: null,
-          picture: null,
-          uploadValue: 0,
-        },
-        image3: {
-          name: '3',
-          imageData: null,
-          picture: null,
-          uploadValue: 0,
-        },
-        image4: {
-          name: '4',
-          imageData: null,
-          picture: null,
-          uploadValue: 0,
-        },
-        image5: {
-          name: '5',
-          imageData: null,
-          picture: null,
-          uploadValue: 0,
-        },
-        image6: {
-          name: '6',
-          imageData: null,
-          picture: null,
-          uploadValue: 0,
-        },
-        image7: {
-          name: '7',
-          imageData: null,
-          picture: null,
-          uploadValue: 0,
-        },
-      },
+      dialogSpec: false,
+      editingSpecBuilding: null,
 
       e1: 1,
 
@@ -889,7 +796,16 @@ export default {
         list.push(item)
       }
       return list
+    },
+    sortBuildings() {
+      let arrBuildings = []
+      for(let building in this.buildings) {
+        arrBuildings.push(this.buildings[building])
+      }
+      console.log('this.arrBuildings', arrBuildings.sort((a, b) => a.weight - b.weight))
+      return arrBuildings.sort((a, b) => a.weight - b.weight)
     }
+
   },
   async created() {
       this.buildings = await this.$store.dispatch('buildings/getAll')
@@ -900,9 +816,6 @@ export default {
       this.buildingsLoaded = true
   },
   methods: {
-    setItemSize(valueX, valueY) {
-      this.building.sizeMatrix[`x${valueX}`][`y${valueY}`] = !this.building.sizeMatrix[`x${valueX}`][`y${valueY}`]
-    },
     addConsumption1() {
       this.building.consumptionResource1 = {
         slug: '',
@@ -922,78 +835,66 @@ export default {
       this.showDestroyReturnResources1 = true
     },
     getResourceIconUrl(slug) {
-      return this.resources[slug].image.url
+      return this.resources[slug].imageUrl
     },
     test() {
       this.getResourceIcon()
     },
-    previewImage(event, imageProp) {
-      console.log('event: ', event, imageProp);
-      this.images[imageProp].uploadValue = 0
-      this.images[imageProp].picture = null
-      this.images[imageProp].imageData = event
-      // this.images[imageProp].imageData = event.target.files[0]
-    },
+    dialogAdd(type) {
+      // if(type === 'special') {
 
-    onUpload(imageProp) {
-      this.images[imageProp].picture = null
-
-      const storageRef = firebase.storage()
-        .ref(`img/buildings/${this.building.slug}-${this.images[imageProp].name}`)
-        .put(this.images[imageProp].imageData)
-      storageRef.on(
-        `state_changed`,
-        snapshot => { this.images[imageProp].uploadValue = (snapshot.bytesTransferred / snapshot.totalBytes) * 100 },
-        error => { console.log(error.message) },
-        () => { this.images[imageProp].uploadValue = 100
-          storageRef.snapshot.ref.getDownloadURL().then((url) => {
-            console.log('url: ', url);
-            console.log('this.building: ', this.building);
-            this.images[imageProp].picture = url
-            console.log('this.images: ', this.images);
-            this.building.images[imageProp] = { url }
-            console.log('this.building.images: ', this.building.images);
-          })
+      // } else {
+        this.dialog = true
+        this.dialogCurrent = 'Add'
+        // auto-name img
+        for(let i = 1; i <= 7; i++) {
+          this.building.images[`image${i}`].url = `/img/buildings/${this.building.slug}-${i}.png`
         }
-      )
-      console.log('this.building: ', this.building);
-      // this.building.images[imageProp].url = this.images[imageProp].picture
-      console.log('this.building: ', this.building);
-    },
-    dialogAdd() {
-      this.dialog = true
-      this.dialogCurrent = 'Add'
-
-      // auto-name img
-      for(let i = 1; i <= 7; i++) {
-        this.building.images[`image${i}`].url = `/img/buildings/${this.building.slug}-${i}.png`
-      }
-      this.building.images.icon.url = `/img/buildings/${this.building.slug}-icon.png`
+        this.building.images.icon.url = `/img/buildings/${this.building.slug}-icon.png`
+      // }
     },
     dialogEdit(slug) {
-      this.dialog = true
-      this.dialogCurrent = 'Edit'
-      this.building = this.buildings[slug]
+      if(slug === 'tavern') {
+        console.log('slug', slug === 'tavern', slug)
+        console.log('this.editingSpecBuilding: ', this.editingSpecBuilding);
+        this.editingSpecBuilding = this.buildings[slug]
+        console.log('this.editingSpecBuilding: ', this.editingSpecBuilding);
+        this.dialogCurrent = 'Edit'
+        this.dialogSpec = true
+      } else {
 
+        this.building = this.buildings[slug]
 
+        this.currentTypes = []
+        for(const prop in this.building.types) {
+          this.currentTypes.push(this.building.types[prop])
+        }
+        this.currentOrigins = []
+        for(const prop in this.building.origins) {
+          this.currentOrigins.push(this.building.origins[prop])
+        }
 
-      // this.building.weight = 0
-      // this.building.origins = {}
-      // this.building.types =  {}
+        this.dialogCurrent = 'Edit'
+        this.dialog = true
 
-
-      if(this.building.destroyReturnResources.resource1) {
-        this.showDestroyReturnResources1 = true
+        if(this.building.destroyReturnResources.resource1) {
+          this.showDestroyReturnResources1 = true
+        }
       }
     },
     editBuilding() {
-
+      console.log('editBuilding: ');
+      this.building.types = {}
+      this.building.origins = {}
       this.currentTypes.forEach((el, idx) => {
+        console.log('el, idx: ', el, idx);
         this.building.types[idx] = el
       })
       this.currentOrigins.forEach((el, idx) => {
+        console.log('el, idx: ', el, idx);
         this.building.origins[idx] = el
       })
+      console.log('editBuilding: 2');
 
       this.$store.dispatch('buildings/edit', this.building)
         .then(res => {
@@ -1007,8 +908,6 @@ export default {
         })
     },
     addBuilding() {
-      this.building.id = Object.keys(this.buildings).length + 1
-
       this.currentTypes.forEach((el, idx) => {
         this.building.types[idx] = el
       })
@@ -1027,6 +926,18 @@ export default {
           this.dialog = false
           console.log('error: ', error);
         })
+    },
+    onDialogSpec(data) {
+      if(data.type === 'add') {
+        this.dialogSpec = false
+      } else if(data.type === 'edit') {
+
+        this.dialogSpec = false
+      } else if(data.type === 'close') {
+        this.dialogSpec = false
+      } else {
+        this.dialogSpec = false
+      }
     }
   }
 }
@@ -1047,11 +958,11 @@ export default {
   position: relative;
   display: flex;
 }
-.edit-building {
+/* .edit-building {
   right: 0;
   top: 0;
   position: absolute;
-}
+} */
 img.preview {
   width: 50px;
 }
@@ -1074,5 +985,11 @@ img.preview {
 }
 .size-item-active {
   background-color: #4aad49;
+}
+.level-text {
+  width: 100%;
+}
+.text-link, .level-text {
+  align-self: center;
 }
 </style>

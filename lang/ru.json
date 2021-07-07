@@ -6,7 +6,9 @@
     "logout": "Выйти",
     "en": "en",
     "ru": "ru",
-    "about": "О нас"
+    "about": "О нас",
+    "buildings": "Здания",
+    "resources": "Продукция"
   },
   "login": {
     "title": "Вход",
@@ -47,6 +49,12 @@
   "about": {
     "title": "О нас",
     "introduction": "Эта страница создана, чтобы дать вам больше информации."
+  },
+  "buildings": {
+    "title": "Здания",
+    "addBuilding": "Добавить здание",
+    "labelNameEn": "Название на английском",
+    "labelNameRu": "Название на русском"
   },
   "layout": {
     "topBarTitle": "Приложение"
