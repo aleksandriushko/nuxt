@@ -6,6 +6,8 @@
 
         <tavern v-if="building.slug === 'tavern'" :building="building" />
 
+        <provisionHouse v-else-if="building.slug === 'provision-house'" :building="building" :resources="resources" />
+
         <template v-else>
           <v-row>
             <v-col cols="1" sm="1" md="1">
@@ -24,7 +26,6 @@
           <v-row>
             <v-col cols="6">
               <v-card max-width="344" outlined>
-
                 <v-list-item class="grow">
                     Production: {{ building.productionResource.amount }} x <img :src="production.imageUrl" alt="" class="resource-icon">
                   <v-list-item-content>
@@ -221,10 +222,12 @@
 <script>
 import firebase from 'firebase';
 import tavern from '@/components/pages/buildings/tavern';
+import provisionHouse from '@/components/pages/buildings/provisionHouse';
 
 export default {
   components: {
-    tavern
+    tavern,
+    provisionHouse
   },
   head() {
     return { title: this.$t('buildings.title') }
@@ -280,10 +283,12 @@ export default {
     this.building = await this.$store.dispatch('buildings/get', this.$route.params.slug)
     console.log('this.building: ', this.building);
     this.breadcrumps[2].text = this.building.name.en
-    if(this.building.slug !== 'tavern') {
+    if(this.building.slug !== 'tavern' && this.building.slug !== 'provision-house') {
       this.production = await this.$store.dispatch('resources/get', this.building.productionResource.slug)
       this.consumptionResource1 = await this.$store.dispatch('resources/get', this.building.consumptionResource1.slug)
     }
+    console.log('this.building3: ', this.building);
+
     this.destroyReturnResource1 = await this.$store.dispatch('resources/get', this.building.destroyReturnResources.resource1.slug)
     this.resources = await this.$store.dispatch('resources/getAll')
     console.log('this.resources: ', this.resources);

@@ -121,26 +121,6 @@
                       </v-col>
                     </v-row>
 
-                    <v-row>
-                      <v-col cols="6">
-                        <v-select
-                          v-model="currentOrigins"
-                          :items="originList"
-                          :menu-props="{ maxHeight: '400' }"
-                          :label="$t('buildings.labelOriginList')"
-                          multiple
-                        />
-                      </v-col>
-                      <v-col cols="6">
-                        <v-select
-                          v-model="currentTypes"
-                          :items="typeList"
-                          :menu-props="{ maxHeight: '400' }"
-                          :label="$t('buildings.labelTypeList')"
-                          multiple
-                        />
-                      </v-col>
-                    </v-row>
 
 
                     <v-row>

@@ -10,6 +10,10 @@
         {{ $t('buildings.addSpecBuilding') }}
       </v-btn>
 
+      <!-- <v-btn small @click="dialogProvisionHouse = true">
+        {{ $t('buildings.addProvisionHouse') }}
+      </v-btn> -->
+
       <h1 class="Content__Title">
         {{ $t('buildings.title') }}
       </h1>
@@ -26,7 +30,6 @@
           </v-btn>
         </div>
       </div>
-
 
       <v-dialog v-model="dialog" persistent max-width="800px">
         <v-card>
@@ -63,13 +66,13 @@
                   <v-container>
                     <v-row>
                       <v-col cols="12" sm="12" md="12">
-                        <v-text-field v-model="building.slug" :label="$t('buildings.labelSlug')" />
+                        <v-text-field v-model="building.slug" :label="$t('labels.slug')" />
                       </v-col>
                       <v-col cols="12" sm="12" md="12">
-                        <v-text-field v-model="building.name.en" :label="$t('buildings.labelNameEn')" />
+                        <v-text-field v-model="building.name.en" :label="$t('labels.nameEn')" />
                       </v-col>
                       <v-col cols="12" sm="12" md="12">
-                        <v-text-field v-model="building.name.ru" :label="$t('buildings.labelNameRu')" />
+                        <v-text-field v-model="building.name.ru" :label="$t('labels.nameRu')" />
                       </v-col>
                     </v-row>
                     <v-row>
@@ -124,7 +127,7 @@
                           v-model="currentOrigins"
                           :items="originList"
                           :menu-props="{ maxHeight: '400' }"
-                          :label="$t('buildings.labelOriginList')"
+                          :label="$t('labels.typeList')"
                           multiple
                         />
                       </v-col>
@@ -133,7 +136,7 @@
                           v-model="currentTypes"
                           :items="typeList"
                           :menu-props="{ maxHeight: '400' }"
-                          :label="$t('buildings.labelTypeList')"
+                          :label="$t('labels.originList')"
                           multiple
                         />
                       </v-col>
@@ -161,19 +164,8 @@
                         <v-text-field v-model="building.destroyReturnResources.resource1.amount" :label="$t('buildings.labelConsumptionResource1Amount')" />
                       </v-col>
                     </v-row>
-
-
-
                   </v-container>
                 </v-card-text>
-
-                <v-btn color="primary" @click="e1 = 2">
-                  Continue
-                </v-btn>
-
-                <v-btn text>
-                  Cancel
-                </v-btn>
               </v-stepper-content>
 
               <v-stepper-content step="2">
@@ -181,13 +173,11 @@
                   <v-container>
                     <v-row>
                       <v-col cols="12" sm="12" md="12">
-                        {{ $t('buildings.labelImageIcon') }}
-                        <v-text-field v-model="building.images.icon.url" :label="'i18n icon'" />
+                        <v-text-field v-model="building.images.icon.url" :label="$t('labels.imageIconUrl')" />
                       </v-col>
 
                       <v-col cols="12" sm="12" md="12" v-for="item in 7" :key="item">
-                        {{ $t('buildings.labelImage') + ` ${item}` }}
-                        <v-text-field v-model="building.images[`image${item}`].url" :label="'i18n image'" />
+                        <v-text-field v-model="building.images[`image${item}`].url" :label="`${$t('labels.imageUrl')} ${item}`" />
                       </v-col>
                     </v-row>
                   </v-container>
@@ -316,22 +306,11 @@
                     </v-col>
                   </v-row>
                 </div>
-
-                <v-btn color="primary">
-                  Add
-                </v-btn>
-                <v-btn text>
-                  Cancel
-                </v-btn>
               </v-stepper-content>
               <!-- STEP 5 -->
               <v-stepper-content step="5">
                 <div v-for="lvl in 7" :key="lvl">
                   <h2>Build resource {{ lvl }}</h2>
-
-                                        <!-- {{ building.upgradeCost }} -->
-
-
                   <v-row>
                     <v-col cols="9" sm="9" md="9">
                       <v-select
@@ -400,11 +379,11 @@
               Close
             </v-btn>
             <v-btn v-if="dialogCurrent === 'Add'" color="blue darken-1" text @click="addBuilding">
-              {{ $t('buildings.dialogBtnAdd') }}
+              {{ $t('buttons.add') }}
             </v-btn>
 
             <v-btn v-if="dialogCurrent === 'Edit'"  color="blue darken-1" text @click="editBuilding">
-              {{ $t('buildings.dialogBtnEdit') }}
+              {{ $t('buttons.edit') }}
             </v-btn>
 
 
@@ -412,6 +391,7 @@
         </v-card>
       </v-dialog>
       <dialogSpecialBuilding :dialog="dialogSpec" :resources="resources" :editingSpecBuilding="editingSpecBuilding" :dialogCurrent="dialogCurrent"  @clicked="onDialogSpec" />
+      <dialogProvisionHouse :dialog="dialogProvisionHouse" :resources="resources" :editingProvisionHouse="editingProvisionHouse" :dialogCurrent="dialogCurrent"  @clicked="onDialogProvisionHouse" />
       <!-- <button @click="test">test</button> -->
     </div>
   </div>
@@ -419,13 +399,15 @@
 
 <script>
 import dialogSpecialBuilding from '@/components/elements/dialogSpecialBuilding'
+import dialogProvisionHouse from '@/components/elements/buildings/dialogProvisionHouse'
 
 export default {
   head() {
     return { title: this.$t('buildings.title') }
   },
   components: {
-    dialogSpecialBuilding
+    dialogSpecialBuilding,
+    dialogProvisionHouse
   },
   data() {
     return {
@@ -771,13 +753,15 @@ export default {
       showDestroyReturnResources3: false,
       showConsumption1: false,
 
-
       selectedProductionResource: [],
 
       dialog: false,
 
       dialogSpec: false,
       editingSpecBuilding: null,
+
+      dialogProvisionHouse: false,
+      editingProvisionHouse: null,
 
       e1: 1,
 
@@ -855,12 +839,13 @@ export default {
     },
     dialogEdit(slug) {
       if(slug === 'tavern') {
-        console.log('slug', slug === 'tavern', slug)
-        console.log('this.editingSpecBuilding: ', this.editingSpecBuilding);
         this.editingSpecBuilding = this.buildings[slug]
-        console.log('this.editingSpecBuilding: ', this.editingSpecBuilding);
         this.dialogCurrent = 'Edit'
         this.dialogSpec = true
+      } else if(slug === 'provision-house') {
+        this.editingProvisionHouse = this.buildings[slug]
+        this.dialogCurrent = 'Edit'
+        this.dialogProvisionHouse = true
       } else {
 
         this.building = this.buildings[slug]
@@ -931,12 +916,22 @@ export default {
       if(data.type === 'add') {
         this.dialogSpec = false
       } else if(data.type === 'edit') {
-
         this.dialogSpec = false
       } else if(data.type === 'close') {
         this.dialogSpec = false
       } else {
         this.dialogSpec = false
+      }
+    },
+    onDialogProvisionHouse(data) {
+      if(data.type === 'add') {
+        this.dialogProvisionHouse = false
+      } else if(data.type === 'edit') {
+        this.dialogProvisionHouse = false
+      } else if(data.type === 'close') {
+        this.dialogProvisionHouse = false
+      } else {
+        this.dialogProvisionHouse = false
       }
     }
   }

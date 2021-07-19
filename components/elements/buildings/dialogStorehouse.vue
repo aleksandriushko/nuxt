@@ -149,8 +149,10 @@
                     </v-col>
 
                     <v-col cols="12" sm="12" md="12">
-                      {{ $t('buildings.labelImage') + ' 1' }}
-                      <v-text-field v-model="building.images.image1.url" :label="'i18n image'" />
+                      <v-col cols="12" sm="12" md="12" v-for="item in 7" :key="item">
+                        {{ $t('buildings.labelImage') + ` ${item}` }}
+                        <v-text-field v-model="building.images[`image${item}`].url" :label="'i18n image'" />
+                      </v-col>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -160,16 +162,18 @@
             <!-- STEP 3 -->
             <v-stepper-content step="3">
             </v-stepper-content>
+
             <!-- STEP 4 -->
             <v-stepper-content step="4">
-                <h2>Move resource</h2>
+              <div v-for="lvl in 7" :key="lvl">
+                <h2>Move resource {{ lvl }}</h2>
                 <v-row>
                   <v-col cols="9" sm="9" md="9">
                     <v-select
-                      v-model="building.moveCost[`level1`].resource1.slug"
+                      v-model="building.moveCost[`level${lvl}`].resource1.slug"
                       :items="resourcesSelectList"
                       :menu-props="{ maxHeight: '400' }"
-                      :label="$t('buildings.labelMoveResource') + ` 1a`"
+                      :label="$t('buildings.labelMoveResource') + ` ${lvl}a`"
                     >
                       <template v-slot:item="data">
                         <img :src="getResourceIconUrl(data.item)" alt="">
@@ -178,16 +182,16 @@
                     </v-select>
                   </v-col>
                   <v-col cols="3" sm="3" md="3">
-                    <v-text-field v-model="building.moveCost[`level1`].resource1.amount" :label="$t('buildings.labelProductionResourceAmount')" />
+                    <v-text-field v-model="building.moveCost[`level${lvl}`].resource1.amount" :label="$t('buildings.labelProductionResourceAmount')" />
                   </v-col>
                 </v-row>
                 <v-row>
                   <v-col cols="9" sm="9" md="9">
                     <v-select
-                      v-model="building.moveCost[`level1`].resource2.slug"
+                      v-model="building.moveCost[`level${lvl}`].resource2.slug"
                       :items="resourcesSelectList"
                       :menu-props="{ maxHeight: '400' }"
-                      :label="$t('buildings.labelMoveResource') + ` 1b`"
+                      :label="$t('buildings.labelMoveResource') + ` ${lvl}b`"
                     >
                       <template v-slot:item="data">
                         <img :src="getResourceIconUrl(data.item)" alt="">
@@ -196,76 +200,78 @@
                     </v-select>
                   </v-col>
                   <v-col cols="3" sm="3" md="3">
-                    <v-text-field v-model="building.moveCost[`level1`].resource2.amount" :label="$t('buildings.labelProductionResourceAmount')" />
+                    <v-text-field v-model="building.moveCost[`level${lvl}`].resource2.amount" :label="$t('buildings.labelProductionResourceAmount')" />
                   </v-col>
                 </v-row>
                 <v-row>
                   <v-col cols="12" sm="12" md="12">
-                    <v-text-field v-model="building.moveCost[`level1`].premium.amount" :label="$t('buildings.labelMoveResourcePremium')" />
+                    <v-text-field v-model="building.moveCost[`level${lvl}`].premium.amount" :label="$t('buildings.labelMoveResourcePremium')" />
                   </v-col>
                 </v-row>
+              </div>
             </v-stepper-content>
             <!-- STEP 5 -->
             <v-stepper-content step="5">
-              <h2>Build resource</h2>
+              <div v-for="lvl in 7" :key="lvl">
+                <h2>Build resource {{ lvl }}</h2>
+                <v-row>
+                  <v-col cols="9" sm="9" md="9">
+                    <v-select
+                      v-model="building.upgradeCost[`level${lvl}`].resource1.slug"
+                      :items="resourcesSelectList"
+                      :menu-props="{ maxHeight: '400' }"
+                      :label="$t('buildings.labelUpgradeResource') + ` ${lvl}a`"
+                    >
+                      <template v-slot:item="data">
+                        <img :src="getResourceIconUrl(data.item)" alt="">
+                        {{ data.item }}
+                      </template>
+                    </v-select>
+                  </v-col>
+                  <v-col cols="3" sm="3" md="3">
+                    <v-text-field v-model="building.upgradeCost[`level${lvl}`].resource1.amount" :label="$t('buildings.labelProductionResourceAmount')" />
+                  </v-col>
+                </v-row>
+                <v-row v-if="building.upgradeCost[`level${lvl}`].resource2">
+                  <v-col cols="9" sm="9" md="9">
+                    <v-select
+                      v-model="building.upgradeCost[`level${lvl}`].resource2.slug"
+                      :items="resourcesSelectList"
+                      :menu-props="{ maxHeight: '400' }"
+                      :label="$t('buildings.labelUpgradeResource') + ` ${lvl}b`"
+                    >
+                      <template v-slot:item="data">
+                        <img :src="getResourceIconUrl(data.item)" alt="">
+                        {{ data.item }}
+                      </template>
+                    </v-select>
+                  </v-col>
+                  <v-col cols="3" sm="3" md="3">
+                    <v-text-field v-model="building.upgradeCost[`level${lvl}`].resource2.amount" :label="$t('buildings.labelProductionResourceAmount')" />
+                  </v-col>
+                </v-row>
 
-              <v-row>
-                <v-col cols="9" sm="9" md="9">
-                  <v-select
-                    v-model="building.upgradeCost[`level1`].resource1.slug"
-                    :items="resourcesSelectList"
-                    :menu-props="{ maxHeight: '400' }"
-                    :label="$t('buildings.labelUpgradeResource') + ` 1a`"
-                  >
-                    <template v-slot:item="data">
-                      <img :src="getResourceIconUrl(data.item)" alt="">
-                      {{ data.item }}
-                    </template>
-                  </v-select>
-                </v-col>
-                <v-col cols="3" sm="3" md="3">
-                  <v-text-field v-model="building.upgradeCost[`level1`].resource1.amount" :label="$t('buildings.labelProductionResourceAmount')" />
-                </v-col>
-              </v-row>
-              <v-row v-if="building.upgradeCost[`level1`].resource2">
-                <v-col cols="9" sm="9" md="9">
-                  <v-select
-                    v-model="building.upgradeCost[`level1`].resource2.slug"
-                    :items="resourcesSelectList"
-                    :menu-props="{ maxHeight: '400' }"
-                    :label="$t('buildings.labelUpgradeResource') + ` 1b`"
-                  >
-                    <template v-slot:item="data">
-                      <img :src="getResourceIconUrl(data.item)" alt="">
-                      {{ data.item }}
-                    </template>
-                  </v-select>
-                </v-col>
-                <v-col cols="3" sm="3" md="3">
-                  <v-text-field v-model="building.upgradeCost[`level1`].resource2.amount" :label="$t('buildings.labelProductionResourceAmount')" />
-                </v-col>
-              </v-row>
+                <v-row>
+                  <v-col cols="3" sm="3" md="3">
+                    <v-text-field v-model="building.upgradeCost[`level${lvl}`].time.minutes" :label="$t('buildings.labelProductionResourceMinutes')" />
+                  </v-col>
+                  <v-col cols="3" sm="3" md="3">
+                    <v-text-field v-model="building.upgradeCost[`level${lvl}`].time.seconds" :label="$t('buildings.labelProductionResourceSeconds')" />
+                  </v-col>
+                  <v-col cols="3">
+                    <v-text-field v-model="building.upgradeCost[`level${lvl}`].time.hours" :label="$t('buildings.labelProductionResourceHours')" />
+                  </v-col>
+                  <v-col cols="3">
+                    <v-text-field v-model="building.upgradeCost[`level${lvl}`].time.days" :label="$t('buildings.labelProductionResourceDays')" />
+                  </v-col>
+                </v-row>
 
-              <v-row>
-                <v-col cols="3" sm="3" md="3">
-                  <v-text-field v-model="building.upgradeCost[`level1`].time.minutes" :label="$t('buildings.labelProductionResourceMinutes')" />
-                </v-col>
-                <v-col cols="3" sm="3" md="3">
-                  <v-text-field v-model="building.upgradeCost[`level1`].time.seconds" :label="$t('buildings.labelProductionResourceSeconds')" />
-                </v-col>
-                <v-col cols="3">
-                  <v-text-field v-model="building.upgradeCost[`level1`].time.hours" :label="$t('buildings.labelProductionResourceHours')" />
-                </v-col>
-                <v-col cols="3">
-                  <v-text-field v-model="building.upgradeCost[`level1`].time.days" :label="$t('buildings.labelProductionResourceDays')" />
-                </v-col>
-              </v-row>
-
-              <v-row>
-                <v-col cols="12" sm="12" md="12">
-                  <v-text-field v-model="building.upgradeCost[`level1`].premium.amount" :label="$t('buildings.labelUpgradeResourcePremium')" />
-                </v-col>
-              </v-row>
+                <v-row>
+                  <v-col cols="12" sm="12" md="12">
+                    <v-text-field v-model="building.upgradeCost[`level${lvl}`].premium.amount" :label="$t('buildings.labelUpgradeResourcePremium')" />
+                  </v-col>
+                </v-row>
+              </div>
             </v-stepper-content>
           </v-stepper-items>
         </v-stepper>
@@ -303,7 +309,7 @@ export default {
       type: Object,
       default: {}
     },
-    editingSpecBuilding: {
+    editingProvisionHouse: {
       type: Object,
       default: null
     },
@@ -330,12 +336,31 @@ export default {
         needPatent: true,
         canMove: true,
 
+
         images: {
           icon: {
-            url: `/img/buildings/provision-house-icon.png`
+            url: `/img/buildings/image-icon.png`
           },
           image1: {
-            url: `/img/buildings/provision-house.png`
+            url: `/img/buildings/image-1.png`
+          },
+          image2: {
+            url: `/img/buildings/image-2.png`
+          },
+          image3: {
+            url: `/img/buildings/image-3.png`
+          },
+          image4: {
+            url: `/img/buildings/image-4.png`
+          },
+          image5: {
+            url: `/img/buildings/image-5.png`
+          },
+          image6: {
+            url: `/img/buildings/image-6.png`
+          },
+          image7: {
+            url: `/img/buildings/image-7.png`
           },
         },
 
@@ -349,17 +374,101 @@ export default {
             amount: 9999,
           },
         },
-        requiredLevel: 4,
+        requiredLevel: 7,
 
         moveCost: {
           level1: {
             resource1: {
               slug: 'pinewood-planks',
-              amount: 30,
+              amount: 10,
             },
             resource2: {
               slug: 'stones',
-              amount: 20,
+              amount: 10,
+            },
+            premium: {
+              amount: 1,
+            },
+          },
+
+          level2: {
+            resource1: {
+              slug: 'pinewood-planks',
+              amount: 200,
+            },
+            resource2: {
+              slug: 'stones',
+              amount: 200,
+            },
+            premium: {
+              amount: 1,
+            },
+          },
+
+          level3: {
+            resource1: {
+              slug: 'hardwood-planks',
+              amount: 1000,
+            },
+            resource2: {
+              slug: 'stones',
+              amount: 500,
+            },
+            premium: {
+              amount: 1,
+            },
+          },
+
+          level4: {
+            resource1: {
+              slug: 'hardwood-planks',
+              amount: 800,
+            },
+            resource2: {
+              slug: 'marble',
+              amount: 800,
+            },
+            premium: {
+              amount: 1,
+            },
+          },
+
+          level5: {
+            resource1: {
+              slug: 'coins',
+              amount: 250,
+            },
+            resource2: {
+              slug: 'marble',
+              amount: 1000,
+            },
+            premium: {
+              amount: 1,
+            },
+          },
+
+          level6: {
+            resource1: {
+              slug: 'coins',
+              amount: 250,
+            },
+            resource2: {
+              slug: 'marble',
+              amount: 1000,
+            },
+            premium: {
+              amount: 1,
+            },
+          },
+
+          level7: {
+            resource1: {
+              slug: 'coins',
+              amount: 350,
+            },
+            resource2: {
+              slug: 'marble',
+              amount: 1400,
             },
             premium: {
               amount: 1,
@@ -370,23 +479,135 @@ export default {
         upgradeCost: {
           level1: {
             resource1: {
-              slug: 'pinewood-planks',
-              amount: 100,
+              slug: 'pinewood',
+              amount: 20,
             },
             resource2: {
-              // slug: 'stones',
-              // amount: 40,
-              slug: null,
-              amount: null,
+              slug: 'stones',
+              amount: 80,
             },
             premium: {
-              amount: 10,
+              amount: 1,
             },
             time: {
               seconds: 0,
-              minutes: 10,
+              minutes: 5,
               hours: 0,
               days: 0,
+            }
+          },
+          level2: {
+            resource1: {
+              slug: 'hardwood-planks',
+              amount: 500,
+            },
+            resource2: {
+              slug: 'marble',
+              amount: 650,
+            },
+            premium: {
+              amount: 1,
+            },
+            time: {
+              seconds: 30,
+              minutes: 2,
+              hours: 0,
+              days: 0,
+            }
+          },
+          level3: {
+            resource1: {
+              slug: 'hardwood-planks',
+              amount: 1000,
+            },
+            resource2: {
+              slug: 'marble',
+              amount: 3000,
+            },
+            premium: {
+              amount: 1,
+            },
+            time: {
+              seconds: 0,
+              minutes: 0,
+              hours: 1,
+              days: 0,
+            }
+          },
+          level4: {
+            resource1: {
+              slug: 'coins',
+              amount: 5000,
+            },
+            resource2: {
+              slug: 'marble',
+              amount: 2000,
+            },
+            premium: {
+              amount: 1,
+            },
+            time: {
+              seconds: 0,
+              minutes: 0,
+              hours: 0,
+              days: 1,
+            }
+          },
+          level5: {
+            resource1: {
+              slug: 'exotic-wood-planks',
+              amount: 9000,
+            },
+            resource2: {
+              slug: 'granite',
+              amount: 5000,
+            },
+            premium: {
+              amount: 1,
+            },
+            time: {
+              seconds: 0,
+              minutes: 0,
+              hours: 0,
+              days: 7,
+            }
+          },
+          level6: {
+            resource1: {
+              slug: 'grout',
+              amount: 800,
+            },
+            resource2: {
+              slug: 'granite',
+              amount: 5000,
+            },
+            premium: {
+              amount: 1,
+            },
+            time: {
+              seconds: 0,
+              minutes: 0,
+              hours: 0,
+              days: 7,
+            }
+          },
+          level7: {
+            resource1: {
+              slug: 'advanced-tools',
+              amount: 4200,
+            },
+            resource2: {
+              slug: 'oil',
+              amount: 5050,
+            },
+            premium: {
+              amount: 1,
+            },
+            time: {
+              seconds: 0,
+              minutes: 0,
+              hours: 0,
+              days: 7,
             }
           },
         },
@@ -400,7 +621,7 @@ export default {
         origins: {},
         types: {},
 
-        weight: 4,
+        weight: 7,
         returnToStarMenu: false, // After the demolition returns to star menu:
       },
       showDestroyReturnResources1: false,
@@ -422,7 +643,7 @@ export default {
     }
   },
   watch: {
-    editingSpecBuilding(building) {
+    editingProvisionHouse(building) {
       console.log('w building 11', building)
       if(building) {
         this.building = building
@@ -441,6 +662,13 @@ export default {
       }
     }
   },
+  created() {
+    // auto-nameing img
+    for(let i = 1; i <= 7; i++) {
+      this.building.images[`image${i}`].url = `/img/buildings/${this.building.slug}-${i}.png`
+    }
+    this.building.images.icon.url = `/img/buildings/${this.building.slug}-icon.png`
+  },
   computed: {
     resourcesSelectList() {
       let list = []
@@ -452,8 +680,8 @@ export default {
   },
   methods: {
     test() {
-      this.editingSpecBuilding
-      console.log('this.editingSpecBuilding: ', this.editingSpecBuilding);
+      this.editingProvisionHouse
+      console.log('this.editingProvisionHouse: ', this.editingProvisionHouse);
     },
     addDestroyReturnResources1() {
       this.building.destroyReturnResources = {

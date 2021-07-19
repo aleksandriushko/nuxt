@@ -47,18 +47,28 @@
         </v-list-item> -->
 
 
-      <v-list-group :value="true" prepend-icon="mdi-account-circle">
-        <template v-slot:activator>
-          <v-list-item-title>{{ $t('links.specialists') }}</v-list-item-title>
-        </template>
+        <v-list-group :value="false" prepend-icon="mdi-account-circle">
+          <template v-slot:activator>
+            <v-list-item-title>{{ $t('links.specialists') }}</v-list-item-title>
+          </template>
 
-          <v-list-item v-for="([title, icon, path], i) in specialists" :key="i" link  :to="$i18n.path(path)">
-            <v-list-item-icon>
-              <v-icon v-text="icon"></v-icon>
-            </v-list-item-icon>
-            <v-list-item-title v-text="getLinkName(title)"></v-list-item-title>
-          </v-list-item>
-      </v-list-group>
+            <v-list-item v-for="([title, icon, path], i) in specialists" :key="i" link  :to="$i18n.path(path)">
+              <v-list-item-icon>
+                <v-icon v-text="icon"></v-icon>
+              </v-list-item-icon>
+              <v-list-item-title v-text="getLinkName(title)"></v-list-item-title>
+            </v-list-item>
+        </v-list-group>
+
+
+        <v-list-item link :to="$i18n.path('buffs')">
+          <v-list-item-action>
+            <v-icon>mdi-arrow-right</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>{{ $t('links.buffs') }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
 
 
       </v-list>

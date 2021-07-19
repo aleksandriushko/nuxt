@@ -50,16 +50,16 @@
                   <v-container>
                     <v-row>
                       <v-col cols="12" sm="12" md="12">
-                        <v-text-field v-model="resource.name.en" :label="$t('resources.labelNameEn')" />
+                        <v-text-field v-model="resource.name.en" :label="$t('labels.nameEn')" />
                       </v-col>
                       <v-col cols="12" sm="12" md="12">
-                        <v-text-field v-model="resource.name.ru" :label="$t('resources.labelNameRu')" />
+                        <v-text-field v-model="resource.name.ru" :label="$t('labels.nameRu')" />
                       </v-col>
                       <v-col cols="12" sm="12" md="12">
-                        <v-text-field v-model="slug" :label="$t('resources.labelSlug')" disabled />
+                        <v-text-field v-model="slug" :label="$t('labels.slug')" disabled_ />
                       </v-col>
                       <v-col cols="12" sm="12" md="12">
-                        <v-text-field v-model="imageUrl" label="imgUrl" disabled />
+                        <v-text-field v-model="imageUrl" label="imgUrl" disabled_ />
                       </v-col>
                     </v-row>
                   </v-container>
@@ -79,7 +79,7 @@
                   <v-container>
                     <v-row>
                       <v-col cols="12" sm="12" md="12">
-                        {{ $t('resources.labelImageIcon') }}
+                        {{ $t('labels.imageIconUrl') }}
                         <v-row>
                           <!-- <v-col cols="6" sm="6" md="6"> -->
                             <!-- <v-file-input accept="image/*" @change="previewImage" label="File input"/> -->
@@ -166,11 +166,11 @@
               Close
             </v-btn>
             <v-btn v-if="dialogCurrent === 'Add'" color="blue darken-1" text @click="addResource">
-              {{ $t('resources.dialogBtnAdd') }}
+              {{ $t('buttons.add') }}
             </v-btn>
 
             <v-btn v-if="dialogCurrent === 'Edit'"  color="blue darken-1" text @click="editResource">
-              {{ $t('resources.dialogBtnEdit') }}
+              {{ $t('buttons.edit') }}
             </v-btn>
 
           </v-card-actions>
@@ -225,9 +225,11 @@ export default {
   },
   computed: {
     slug() {
+      // return 'stripy-easter-egg'
       return this.resource.name.en.toLowerCase().replace(' ', '-')
     },
     imageUrl() {
+      // return `/img/resources/stripy-easter-egg.png`
       return `/img/resources/${this.slug}.png`
     }
   },

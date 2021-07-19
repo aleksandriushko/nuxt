@@ -13,7 +13,8 @@
     "explorers": "Explorers",
     "geologists": "Geologists",
     "generals": "Generals",
-    "marshals": "Marshals"
+    "marshals": "Marshals",
+    "buffs": "Buffs"
   },
   "login": {
     "title": "Login",
@@ -59,15 +60,9 @@
     "basicTypeDescription": "Эти знания доступны с самого начала игры и вы будете получать даступ к новым зданиям по мере повышения уровня",
     "traderTypeDescription": "Эти здания можно получать только за кристалы у торговцца",
     "title": "Buildings",
-    "dialogBtnEdit": "Edit",
-    "dialogBtnAdd": "Add",
     "addProdBuilding": "Add Prod Building",
     "addSpecBuilding": "Add SpecBuilding",
-    "labelSlug": "Unique name",
-    "labelNameEn": "Name in English",
-    "labelNameRu": "Name in Russian",
-    "labelImageIcon": "Upload Icon",
-    "labelImage": "Upload Building lvl.",
+    "addProvisionHouse": "Add Provision House",
     "labelProductionResourceSlug": "Production Resource",
     "labelProductionResourceAmount": "Amount",
     "labelProductionResourceSeconds": "Seconds",
@@ -89,22 +84,11 @@
     "labelDescriptionRu": "Description Ru",
     "labelWeight": "Weight",
     "labelSizeX": "Size X",
-    "labelSizeY": "Size Y",
-    "labelOriginList": "Origin List",
-    "labelTypeList": "Type List",
-    "uploadBtnName": "Upload"
+    "labelSizeY": "Size Y"
   },
   "resources": {
     "title": "Resources",
-    "dialogBtnEdit": "Edit",
-    "dialogBtnAdd": "Add",
-    "addResource": "Add Resource",
-    "labelSlug": "Unique name",
-    "labelNameEn": "Name in English",
-    "labelNameRu": "Name in Russian",
-    "labelImageIcon": "Upload Icon",
-    "labelImage": "Upload Resource lvl.",
-    "uploadBtnName": "Upload"
+    "addResource": "Add Resource"
   },
   "specialists": {
     "title": "Specialists"
@@ -114,7 +98,6 @@
     "addExplorer": "Add Explorer",
     "labelGameDescriptionEn": "Game Description En",
     "labelGameDescriptionRu": "Game Description Ru",
-    "labelOriginList": "Origin List",
     "labelSpeed": "Speed",
     "end...": "...end"
   },
@@ -123,7 +106,6 @@
     "addGeologist": "Add Geologist",
     "labelGameDescriptionEn": "Game Description En",
     "labelGameDescriptionRu": "Game Description Ru",
-    "labelOriginList": "Origin List",
     "labelSpeed": "Speed",
     "end...": "...end"
   },
@@ -134,7 +116,6 @@
     "labelGameDescriptionRu": "Game Description Ru",
     "labelGameExclaimEn": "Game Exclaim En",
     "labelGameExclaimRu": "Game Exclaim Ru",
-    "labelOriginList": "Origin List",
     "labelSpeed": "Speed",
     "labelHitPoints": "Hit points (HP)",
     "labelAccuracy": "Accuracy",
@@ -161,13 +142,31 @@
     "labelGameDescriptionRu": "Game Description Ru",
     "labelGameExclaimEn": "Game Exclaim En",
     "labelGameExclaimRu": "Game Exclaim Ru",
-    "labelOriginList": "Origin List",
     "labelSpeed": "Speed",
     "labelTravelTime": "Travel Time",
     "labelTravelTimeBack": "Travel Time Back",
     "labelType": "Type",
     "labelUnitCapacity": "Unit Capacity",
     "labelGarrisonImageUrl": "Garrison Image Url",
+    "end...": "...end"
+  },
+  "buffs": {
+    "title": "Buffs",
+    "addBuff": "Add Buff",
+    "labelTarget": "Target",
+    "labelEffectType": "Effect Type",
+    "labelEffectName": "Effect Name",
+    "labelEffectValue": "Effect Value",
+    "titleEffectDuration": "Effect Duration",
+    "labelCurrentBuildings": "Current Buildings",
+    "titleProductionTime": "Production Time",
+    "labelButtonIconUrl": "Button Icon Url",
+    "labelButtonDescriptionEn": "Button Description En",
+    "labelButtonDescriptionRu": "Button Description Ru",
+    "labelCanTrade": "Can Trade",
+    "labelFrendBuff": "Frend Buff",
+    "labelAreaBuff": "Area Buff",
+    "labelButtonName": "Button Name",
     "end...": "...end"
   },
   "labels": {
@@ -177,13 +176,25 @@
     "weight": "Weight",
     "descriptionEn": "Description En",
     "descriptionRu": "Description Ru",
+    "gameDescriptionEn": "Game Description En",
+    "gameDescriptionRu": "Game Description Ru",
     "requiredLevel": "Required Level",
     "imageUrl": "Image Url",
+    "imageIconUrl": "Image Icon Url",
+    "typeList": "Type List",
+    "originList": "Origin List",
+    "seconds": "Seconds",
+    "minutes": "Minutes",
+    "hours": "Hours",
+    "days": "Days",
+    "amount": "Amount",
+    "consumptionResource": "Consumption Resource",
     "end...": "...end"
   },
   "buttons": {
     "add": "Add",
     "edit": "Edit",
+    "addConsumptionResource": "Add Consumption Resource",
     "end...": "...end"
   },
   "layout": {

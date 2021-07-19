@@ -118,7 +118,7 @@
                           v-model="currentOrigins"
                           :items="originList"
                           :menu-props="{ maxHeight: '400' }"
-                          :label="$t('explorers.labelOriginList')"
+                          :label="$t('labels.originList')"
                           multiple
                         />
                       </v-col>
