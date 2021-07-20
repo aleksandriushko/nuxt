@@ -8,6 +8,8 @@
 
         <provisionHouse v-else-if="building.slug === 'provision-house'" :building="building" :resources="resources" />
 
+        <storehouse v-else-if="building.slug === 'storehouse'" :building="building" :resources="resources" />
+
         <template v-else>
           <v-row>
             <v-col cols="1" sm="1" md="1">
@@ -223,11 +225,13 @@
 import firebase from 'firebase';
 import tavern from '@/components/pages/buildings/tavern';
 import provisionHouse from '@/components/pages/buildings/provisionHouse';
+import storehouse from '@/components/pages/buildings/storehouse';
 
 export default {
   components: {
     tavern,
-    provisionHouse
+    provisionHouse,
+    storehouse
   },
   head() {
     return { title: this.$t('buildings.title') }
@@ -283,13 +287,15 @@ export default {
     this.building = await this.$store.dispatch('buildings/get', this.$route.params.slug)
     console.log('this.building: ', this.building);
     this.breadcrumps[2].text = this.building.name.en
-    if(this.building.slug !== 'tavern' && this.building.slug !== 'provision-house') {
+    if(this.building.slug !== 'tavern' && this.building.slug !== 'provision-house' && this.building.slug !== 'storehouse') {
       this.production = await this.$store.dispatch('resources/get', this.building.productionResource.slug)
       this.consumptionResource1 = await this.$store.dispatch('resources/get', this.building.consumptionResource1.slug)
     }
     console.log('this.building3: ', this.building);
 
-    this.destroyReturnResource1 = await this.$store.dispatch('resources/get', this.building.destroyReturnResources.resource1.slug)
+    if(this.building.slug !== 'storehouse') { // удалить проверку, когда переделаю ресурсы без цифр, а массивами
+      this.destroyReturnResource1 = await this.$store.dispatch('resources/get', this.building.destroyReturnResources.resource1.slug)
+    }
     this.resources = await this.$store.dispatch('resources/getAll')
     console.log('this.resources: ', this.resources);
 

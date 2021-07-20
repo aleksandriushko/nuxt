@@ -37,13 +37,13 @@
                 <v-container>
                   <v-row>
                     <v-col cols="12" sm="12" md="12">
-                      <v-text-field v-model="building.slug" :label="$t('buildings.labelSlug')" />
+                      <v-text-field v-model="building.slug" :label="$t('labels.slug')" />
                     </v-col>
                     <v-col cols="12" sm="12" md="12">
-                      <v-text-field v-model="building.name.en" :label="$t('buildings.labelNameEn')" />
+                      <v-text-field v-model="building.name.en" :label="$t('labels.nameEn')" />
                     </v-col>
                     <v-col cols="12" sm="12" md="12">
-                      <v-text-field v-model="building.name.ru" :label="$t('buildings.labelNameRu')" />
+                      <v-text-field v-model="building.name.ru" :label="$t('labels.nameRu')" />
                     </v-col>
                   </v-row>
                   <v-row>
@@ -66,17 +66,15 @@
 
                   <v-row>
                     <v-col cols="12">
-                      <v-textarea
-                        class="mx-2"
-                        :label="$t('buildings.labelDescriptionEn')"
+                      <v-textare
+                        :label="$t('labels.descriptionEn')"
                         rows="1"
                         v-model="building.description.en"
                       />
                     </v-col>
                     <v-col cols="12">
                       <v-textarea
-                        class="mx-2"
-                        :label="$t('buildings.labelDescriptionRu')"
+                        :label="$t('labels.descriptionRu')"
                         rows="1"
                         v-model="building.description.ru"
                       />
@@ -144,13 +142,13 @@
                 <v-container>
                   <v-row>
                     <v-col cols="12" sm="12" md="12">
-                      {{ $t('buildings.labelImageIcon') }}
-                      <v-text-field v-model="building.images.icon.url" :label="'i18n icon'" />
+                      {{ $t('labels.imageIconUrl') }}
+                      <v-text-field v-model="building.images.icon.url" :label="$t('labels.imageIconUrl')" />
                     </v-col>
 
                     <v-col cols="12" sm="12" md="12">
-                      {{ $t('buildings.labelImage') + ' 1' }}
-                      <v-text-field v-model="building.images.image1.url" :label="'i18n image'" />
+                      {{ $t('labels.imageUrl') + ' 1' }}
+                      <v-text-field v-model="building.images.image1.url" :label="$t('labels.imageUrl')" />
                     </v-col>
                   </v-row>
                 </v-container>
@@ -178,7 +176,7 @@
                     </v-select>
                   </v-col>
                   <v-col cols="3" sm="3" md="3">
-                    <v-text-field v-model="building.moveCost[`level1`].resource1.amount" :label="$t('buildings.labelProductionResourceAmount')" />
+                    <v-text-field v-model="building.moveCost[`level1`].resource1.amount" :label="$t('labels.amount')" />
                   </v-col>
                 </v-row>
                 <v-row>
@@ -196,7 +194,7 @@
                     </v-select>
                   </v-col>
                   <v-col cols="3" sm="3" md="3">
-                    <v-text-field v-model="building.moveCost[`level1`].resource2.amount" :label="$t('buildings.labelProductionResourceAmount')" />
+                    <v-text-field v-model="building.moveCost[`level1`].resource2.amount" :label="$t('labels.amount')" />
                   </v-col>
                 </v-row>
                 <v-row>
@@ -215,7 +213,7 @@
                     v-model="building.upgradeCost[`level1`].resource1.slug"
                     :items="resourcesSelectList"
                     :menu-props="{ maxHeight: '400' }"
-                    :label="$t('buildings.labelUpgradeResource') + ` 1a`"
+                    :label="$t('labels.upgradeResource') + ` 1a`"
                   >
                     <template v-slot:item="data">
                       <img :src="getResourceIconUrl(data.item)" alt="">
@@ -224,7 +222,7 @@
                   </v-select>
                 </v-col>
                 <v-col cols="3" sm="3" md="3">
-                  <v-text-field v-model="building.upgradeCost[`level1`].resource1.amount" :label="$t('buildings.labelProductionResourceAmount')" />
+                  <v-text-field v-model="building.upgradeCost[`level1`].resource1.amount" :label="$t('labels.amount')" />
                 </v-col>
               </v-row>
               <v-row v-if="building.upgradeCost[`level1`].resource2">
@@ -233,7 +231,7 @@
                     v-model="building.upgradeCost[`level1`].resource2.slug"
                     :items="resourcesSelectList"
                     :menu-props="{ maxHeight: '400' }"
-                    :label="$t('buildings.labelUpgradeResource') + ` 1b`"
+                    :label="$t('labels.upgradeResource') + ` 1b`"
                   >
                     <template v-slot:item="data">
                       <img :src="getResourceIconUrl(data.item)" alt="">
@@ -242,7 +240,7 @@
                   </v-select>
                 </v-col>
                 <v-col cols="3" sm="3" md="3">
-                  <v-text-field v-model="building.upgradeCost[`level1`].resource2.amount" :label="$t('buildings.labelProductionResourceAmount')" />
+                  <v-text-field v-model="building.upgradeCost[`level1`].resource2.amount" :label="$t('labels.amount')" />
                 </v-col>
               </v-row>
 
@@ -279,11 +277,11 @@
             test
           </v-btn>
           <v-btn v-if="dialogCurrent === 'Add'" color="blue darken-1" text @click="addBuilding">
-            {{ $t('buildings.dialogBtnAdd') }}
+            {{ $t('buttons.add') }}
           </v-btn>
 
           <v-btn v-if="dialogCurrent === 'Edit'"  color="blue darken-1" text @click="editBuilding">
-            {{ $t('buildings.dialogBtnEdit') }}
+            {{ $t('buttons.edit') }}
           </v-btn>
         </v-card-actions>
       </v-card>

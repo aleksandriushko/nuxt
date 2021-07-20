@@ -142,10 +142,69 @@
                   <v-text-field v-model="building.storageCapacities[idx]" :label="$t('buildings.labelStorageCapacity') + ` ${+idx + 1}`" />
                 </v-col>
               </v-row>
+
+
             </v-stepper-content>
 
             <!-- STEP 4 -->
             <v-stepper-content step="4">
+
+              <h2>{{ $t('labels.productionResource') }}</h2>
+              <v-row>
+                <v-col cols="9">
+                  <v-select
+                    v-model="building.productionResource.slug"
+                    :items="resourcesSelectList"
+                    :menu-props="{ maxHeight: '400' }"
+                    :label="$t('labels.productionResource')"
+                  >
+                    <template v-slot:item="data">
+                      <img :src="resources[data.item].imageUrl" alt="">
+                      {{ data.item }}
+                    </template>
+                  </v-select>
+                </v-col>
+                <v-col cols="3">
+                  <v-text-field v-model="building.productionResource.amount" :label="$t('labels.amount')" />
+                </v-col>
+              </v-row>
+
+              <v-row>
+                <v-col cols="3" sm="3" md="3">
+                  <v-text-field v-model="building.productionTime.minutes" :label="$t('buildings.labelProductionResourceMinutes')" />
+                </v-col>
+                <v-col cols="3" sm="3" md="3">
+                  <v-text-field v-model="building.productionTime.seconds" :label="$t('buildings.labelProductionResourceSeconds')" />
+                </v-col>
+                <v-col cols="3">
+                  <v-text-field v-model="building.productionTime.hours" :label="$t('buildings.labelProductionResourceHours')" />
+                </v-col>
+                <v-col cols="3">
+                  <v-text-field v-model="building.productionTime.days" :label="$t('buildings.labelProductionResourceDays')" />
+                </v-col>
+              </v-row>
+
+              <h2>{{ $t('labels.consumptionResource') }}</h2>
+              <v-row v-for="(consumptionResource, idx) in building.consumptionResourcies" :key="'storage-capacities-' + idx">
+                <v-col cols="9">
+                  <v-select
+                    v-model="building.consumptionResourcies[idx].slug"
+                    :items="resourcesSelectList"
+                    :menu-props="{ maxHeight: '400' }"
+                    :label="$t('labels.consumptionResource') + ` ${+idx + 1}`"
+                  >
+                    <template v-slot:item="data">
+                      <img :src="resources[data.item].imageUrl" alt="">
+                      {{ data.item }}
+                    </template>
+                  </v-select>
+                  <!-- <v-text-field v-model="building.consumptionResourcies[idx].slug" :label="$t('labels.consumptionResource') + ` ${+idx + 1}`" /> -->
+                </v-col>
+                <v-col cols="3">
+                  <v-text-field v-model="building.consumptionResourcies[idx].amount" :label="$t('labels.amount')" />
+                </v-col>
+              </v-row>
+
             </v-stepper-content>
             <!-- STEP 5 -->
             <v-stepper-content step="5">
@@ -224,7 +283,7 @@ export default {
       type: Object,
       default: {}
     },
-    editingStorehouse: {
+    editingMine: {
       type: Object,
       default: null
     },
@@ -235,16 +294,16 @@ export default {
   },
   data() {
     return {
-      originList: ['basic', 'ntermediate'],
-      currentOrigins: ['basic'],
-      typeList: ['workshop', 'special', 'storehouse'], // special mean's whan no have some type building evryware
-      currentTypes: ['storehouse'],
+      originList: ['basic', 'intermediate'],
+      currentOrigins: ['intermediate'],
+      typeList: ['workshop', 'special', 'storehouse', 'mine'], // special mean's whan no have some type building evryware
+      currentTypes: ['mine'],
 
       building: {
-        slug: 'storehouse',
+        slug: 'copper-mine',
         name: {
-          en: 'Storehouse',
-          ru: 'Storehouse',
+          en: 'Copper Mine',
+          ru: 'Copper Mine',
         },
         description: {
           en: 'description en',
@@ -256,8 +315,8 @@ export default {
         },
         origins: {},
         types: {},
-        requiredLevel: 8,
-        weight: 8,
+        requiredLevel: 9,
+        weight: 9,
         needPatent: true,
         canMove: false,
         canTrade: false,
@@ -283,22 +342,38 @@ export default {
             amount: 9999,
           },
         },
+        productionResource: {
+          slug: 'copper-ore',
+          amount: 1,
+        },
+        productionTime: {
+          seconds: 0,
+          minutes: 3,
+          hours: 0,
+          days: 0,
+        },
+        consumptionResourcies: {
+          '0': {
+            slug: 'copper-deposit',
+            amount: 1,
+          }
+        },
         upgradeCost: {
           '0': {
             resources: {
               '0': {
                 slug: 'pinewood',
-                amount: 80,
+                amount: 30,
               },
               '1': {
                 slug: 'stones',
-                amount: 80,
+                amount: 45,
               },
             },
             premiumCost: 1,
             time: {
               seconds: 0,
-              minutes: 5,
+              minutes: 3,
               hours: 0,
               days: 0,
             }
@@ -306,13 +381,17 @@ export default {
           '1': {
             resources: {
               '0': {
-                slug: 'hardwood-planks',
-                amount: 120,
+                slug: 'pinewood',
+                amount: 50,
               },
-              '1': {
-                slug: 'marble',
-                amount: 100,
-              },
+              // '0': {
+              //   slug: 'hardwood-planks',
+              //   amount: 120,
+              // },
+              // '1': {
+              //   slug: 'marble',
+              //   amount: 100,
+              // },
             },
             premiumCost: 1,
             time: {
@@ -325,58 +404,70 @@ export default {
           '2': {
             resources: {
               '0': {
-                slug: 'hardwood-planks',
-                amount: 300,
-              },
-              '1': {
-                slug: 'marble',
+                slug: 'pinewood',
                 amount: 150,
               },
+              // '0': {
+              //   slug: 'hardwood-planks',
+              //   amount: 300,
+              // },
+              // '1': {
+              //   slug: 'marble',
+              //   amount: 150,
+              // },
             },
             premiumCost: 1,
             time: {
               seconds: 0,
-              minutes: 0,
-              hours: 1,
+              minutes: 5,
+              hours: 0,
               days: 0,
             }
           },
           '3': {
             resources: {
               '0': {
-                slug: 'coins',
-                amount: 500,
-              },
-              '1': {
-                slug: 'marble',
+                slug: 'pinewood',
                 amount: 300,
               },
+              // '0': {
+              //   slug: 'coins',
+              //   amount: 500,
+              // },
+              // '1': {
+              //   slug: 'marble',
+              //   amount: 300,
+              // },
             },
             premiumCost: 1,
             time: {
-              seconds: 0,
-              minutes: 0,
+              seconds: 30,
+              minutes: 7,
               hours: 0,
-              days: 1,
+              days: 0,
             }
           },
           '4': {
             resources: {
               '0': {
-                slug: 'exotic-wood-planks',
+                slug: 'pinewood',
                 amount: 500,
               },
-              '1': {
-                slug: 'granite',
-                amount: 300,
-              },
+              // '0': {
+              //   slug: 'exotic-wood-planks',
+              //   amount: 500,
+              // },
+              // '1': {
+              //   slug: 'granite',
+              //   amount: 300,
+              // },
             },
             premiumCost: 1,
             time: {
               seconds: 0,
-              minutes: 0,
+              minutes: 10,
               hours: 0,
-              days: 7,
+              days: 0,
             }
           },
           '5': {
@@ -385,36 +476,36 @@ export default {
                 slug: 'grout',
                 amount: 50,
               },
-              '1': {
-                slug: 'granite',
-                amount: 500,
-              },
+              // '1': {
+              //   slug: 'granite',
+              //   amount: 500,
+              // },
             },
             premiumCost: 1,
             time: {
               seconds: 0,
-              minutes: 0,
+              minutes: 10,
               hours: 0,
-              days: 7,
+              days: 0,
             }
           },
           '6': {
             resources: {
               '0': {
                 slug: 'advanced-tools',
-                amount: 800,
-              },
-              '1': {
-                slug: 'oil',
                 amount: 500,
               },
+              // '1': {
+              //   slug: 'oil',
+              //   amount: 500,
+              // },
             },
             premiumCost: 1,
             time: {
-              seconds: 0,
-              minutes: 0,
+              seconds: 20,
+              minutes: 13,
               hours: 0,
-              days: 7,
+              days: 0,
             }
           },
         },
@@ -437,7 +528,7 @@ export default {
     }
   },
   watch: {
-    editingStorehouse(building) {
+    editingMine(building) {
       console.log('w building 11', building)
       if(building) {
         this.building = building

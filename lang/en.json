@@ -63,8 +63,9 @@
     "addProdBuilding": "Add Prod Building",
     "addSpecBuilding": "Add SpecBuilding",
     "addProvisionHouse": "Add Provision House",
+    "addStorehouse": "Add Storehouse",
+    "addMine": "Add Mine",
     "labelProductionResourceSlug": "Production Resource",
-    "labelProductionResourceAmount": "Amount",
     "labelProductionResourceSeconds": "Seconds",
     "labelProductionResourceMinutes": "Minutes",
     "labelProductionResourceHours": "Hours",
@@ -78,13 +79,13 @@
     "labelСanTrade": "Trade",
     "labelMoveResource": "Move Resource",
     "labelMoveResourcePremium": "Move Resource Premium Amount",
-    "labelUpgradeResource": "Upgrade Resource",
     "labelUpgradeResourcePremium": "Upgrade Resource Premium Amount",
-    "labelDescriptionEn": "Description En",
-    "labelDescriptionRu": "Description Ru",
     "labelWeight": "Weight",
     "labelSizeX": "Size X",
-    "labelSizeY": "Size Y"
+    "labelSizeY": "Size Y",
+    "titleStorageCapacities": "Storage Capacities",
+    "labelStorageCapacity": "Storage Capacity",
+    "end...": "...end"
   },
   "resources": {
     "title": "Resources",
@@ -189,12 +190,20 @@
     "days": "Days",
     "amount": "Amount",
     "consumptionResource": "Consumption Resource",
+    "productionResource": "Production Resource",
+    "moveResource": "Move Resource",
+    "upgradeResource": "Upgrade Resource",
     "end...": "...end"
   },
   "buttons": {
     "add": "Add",
     "edit": "Edit",
     "addConsumptionResource": "Add Consumption Resource",
+    "end...": "...end"
+  },
+  "titles": {
+    "moveCost": "Move cost",
+    "upgradeCost": "Upgrade cost",
     "end...": "...end"
   },
   "layout": {

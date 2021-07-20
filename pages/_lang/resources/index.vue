@@ -56,10 +56,10 @@
                         <v-text-field v-model="resource.name.ru" :label="$t('labels.nameRu')" />
                       </v-col>
                       <v-col cols="12" sm="12" md="12">
-                        <v-text-field v-model="slug" :label="$t('labels.slug')" disabled_ />
+                        <v-text-field v-model="resource.slug" :label="$t('labels.slug')" disabled_ />
                       </v-col>
                       <v-col cols="12" sm="12" md="12">
-                        <v-text-field v-model="imageUrl" label="imgUrl" disabled_ />
+                        <v-text-field v-model="imageUrl" label="$t('labels.imageUrl')" disabled_ />
                       </v-col>
                     </v-row>
                   </v-container>
@@ -131,7 +131,7 @@
                     </v-select>
                   </v-col>
                   <v-col cols="3" sm="3" md="3">
-                    <v-text-field v-model="building.productionResource.amount" :label="$t('buildings.labelProductionResourceAmount')" />
+                    <v-text-field v-model="building.productionResource.amount" :label="$t('labels.amount')" />
                   </v-col>
                 </v-row> -->
 

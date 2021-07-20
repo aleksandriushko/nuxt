@@ -105,7 +105,6 @@
                       </v-col>
                       <v-col cols="12">
                         <v-textarea
-                          class="mx-2"
                           :label="$t('geologists.labelGameDescriptionRu')"
                           rows="1"
                           v-model="geologist.gameDescription.ru"

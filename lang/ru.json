@@ -52,9 +52,7 @@
   },
   "buildings": {
     "title": "Здания",
-    "addBuilding": "Добавить здание",
-    "labelNameEn": "Название на английском",
-    "labelNameRu": "Название на русском"
+    "addBuilding": "Добавить здание"
   },
   "layout": {
     "topBarTitle": "Приложение"

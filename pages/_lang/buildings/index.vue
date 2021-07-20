@@ -1,5 +1,5 @@
 <template>
-  <div class="Content">
+  <div class="Content" v-if="buildingsLoaded">
     <div class="container">
 
       <v-btn small class="_edit-building" @click="dialogAdd('production')">
@@ -10,6 +10,14 @@
         {{ $t('buildings.addSpecBuilding') }}
       </v-btn>
 
+      <v-btn small @click="dialogStorehouse = true">
+        {{ $t('buildings.addStorehouse') }}
+      </v-btn>
+
+      <v-btn small @click="dialogMine = true">
+        {{ $t('buildings.addMine') }}
+      </v-btn>
+
       <!-- <v-btn small @click="dialogProvisionHouse = true">
         {{ $t('buildings.addProvisionHouse') }}
       </v-btn> -->
@@ -18,16 +26,30 @@
         {{ $t('buildings.title') }}
       </h1>
 
-      <div v-if="buildingsLoaded" class="buildings-wrap">
-        <div v-for="item in sortBuildings" :key="item.id" class="building">
-          <NuxtLink :to="`/buildings/${item.slug}`" class="img-link"><img :src="item.images.icon.url" alt="" v-if="item.images.icon.url"></NuxtLink>
-          <NuxtLink :to="`/buildings/${item.slug}`" class="text-link">{{ item.name.en }}</NuxtLink>
-          <div class="level-text">{{ item.requiredLevel }}</div>
-          <v-btn small class="edit-building" @click="dialogEdit(item.slug)">
-            <v-icon color="primary">
-              mdi-pencil
-            </v-icon>
-          </v-btn>
+      <!-- <div v-for="(origin, idx) in building.origins"> -->
+      <!-- <div v-for="(bilding, idx) in buildings" :key="'buildings' + idx">
+        {{ bilding }}
+      </div> -->
+
+      <div v-for="(buildingType, idx) in renderBuldingList" :key="'buildings' + idx">
+        <h2 class="buiiding-type-title">{{ buildingType }}</h2>
+        <div class="buildings-wrap">
+          <template v-for="building in basicBuildings">
+            <div v-if="buildingType === building.origins[0]" :key="building.id" class="building">
+              <template v-if="building.images">
+                <NuxtLink :to="`/buildings/${building.slug}`" class="img-link"><img :src="building.images.icon.url" alt="" v-if="building.images.icon.url"></NuxtLink>
+              </template>
+              <template v-else>
+                <NuxtLink :to="`/buildings/${building.slug}`" class="img-link"><img :src="building.imageIconUrl" alt=""></NuxtLink>
+              </template>
+
+              <NuxtLink :to="`/buildings/${building.slug}`" class="text-link">{{ building.name.en }}</NuxtLink>
+              <div class="level-text">{{ building.requiredLevel }}</div>
+              <v-btn small class="edit-building" @click="dialogEdit(building.slug)">
+                <v-icon color="primary">mdi-pencil</v-icon>
+              </v-btn>
+            </div>
+          </template>
         </div>
       </div>
 
@@ -96,14 +118,14 @@
                     <v-row>
                       <v-col cols="12">
                         <v-textarea
-                          :label="$t('buildings.labelDescriptionEn')"
+                          :label="$t('labels.descriptionEn')"
                           rows="1"
                           v-model="building.description.en"
                         />
                       </v-col>
                       <v-col cols="12">
                         <v-textarea
-                          :label="$t('buildings.labelDescriptionRu')"
+                          :label="$t('labels.descriptionRu')"
                           rows="1"
                           v-model="building.description.ru"
                         />
@@ -207,7 +229,7 @@
                     </v-select>
                   </v-col>
                   <v-col cols="3" sm="3" md="3">
-                    <v-text-field v-model="building.productionResource.amount" :label="$t('buildings.labelProductionResourceAmount')" />
+                    <v-text-field v-model="building.productionResource.amount" :label="$t('labels.amount')" />
                   </v-col>
                 </v-row>
 
@@ -279,7 +301,7 @@
                       </v-select>
                     </v-col>
                     <v-col cols="3" sm="3" md="3">
-                      <v-text-field v-model="building.moveCost[`level${lvl}`].resource1.amount" :label="$t('buildings.labelProductionResourceAmount')" />
+                      <v-text-field v-model="building.moveCost[`level${lvl}`].resource1.amount" :label="$t('labels.amount')" />
                     </v-col>
                   </v-row>
                   <v-row>
@@ -297,7 +319,7 @@
                       </v-select>
                     </v-col>
                     <v-col cols="3" sm="3" md="3">
-                      <v-text-field v-model="building.moveCost[`level${lvl}`].resource2.amount" :label="$t('buildings.labelProductionResourceAmount')" />
+                      <v-text-field v-model="building.moveCost[`level${lvl}`].resource2.amount" :label="$t('labels.amount')" />
                     </v-col>
                   </v-row>
                   <v-row>
@@ -317,7 +339,7 @@
                         v-model="building.upgradeCost[`level${lvl}`].resource1.slug"
                         :items="resourcesSelectList"
                         :menu-props="{ maxHeight: '400' }"
-                        :label="$t('buildings.labelUpgradeResource') + ` ${lvl}a`"
+                        :label="$t('labels.upgradeResource') + ` ${lvl}a`"
                       >
                         <template v-slot:item="data">
                           <img :src="getResourceIconUrl(data.item)" alt="">
@@ -326,7 +348,7 @@
                       </v-select>
                     </v-col>
                     <v-col cols="3" sm="3" md="3">
-                      <v-text-field v-model="building.upgradeCost[`level${lvl}`].resource1.amount" :label="$t('buildings.labelProductionResourceAmount')" />
+                      <v-text-field v-model="building.upgradeCost[`level${lvl}`].resource1.amount" :label="$t('labels.amount')" />
                     </v-col>
                   </v-row>
                   <v-row v-if="building.upgradeCost[`level${lvl}`].resource2">
@@ -335,7 +357,7 @@
                         v-model="building.upgradeCost[`level${lvl}`].resource2.slug"
                         :items="resourcesSelectList"
                         :menu-props="{ maxHeight: '400' }"
-                        :label="$t('buildings.labelUpgradeResource') + ` ${lvl}b`"
+                        :label="$t('labels.upgradeResource') + ` ${lvl}b`"
                       >
                         <template v-slot:item="data">
                           <img :src="getResourceIconUrl(data.item)" alt="">
@@ -344,7 +366,7 @@
                       </v-select>
                     </v-col>
                     <v-col cols="3" sm="3" md="3">
-                      <v-text-field v-model="building.upgradeCost[`level${lvl}`].resource2.amount" :label="$t('buildings.labelProductionResourceAmount')" />
+                      <v-text-field v-model="building.upgradeCost[`level${lvl}`].resource2.amount" :label="$t('labels.amount')" />
                     </v-col>
                   </v-row>
 
@@ -385,13 +407,13 @@
             <v-btn v-if="dialogCurrent === 'Edit'"  color="blue darken-1" text @click="editBuilding">
               {{ $t('buttons.edit') }}
             </v-btn>
-
-
           </v-card-actions>
         </v-card>
       </v-dialog>
       <dialogSpecialBuilding :dialog="dialogSpec" :resources="resources" :editingSpecBuilding="editingSpecBuilding" :dialogCurrent="dialogCurrent"  @clicked="onDialogSpec" />
       <dialogProvisionHouse :dialog="dialogProvisionHouse" :resources="resources" :editingProvisionHouse="editingProvisionHouse" :dialogCurrent="dialogCurrent"  @clicked="onDialogProvisionHouse" />
+      <dialogStorehouse :dialog="dialogStorehouse" :resources="resources" :editingStorehouse="editingStorehouse" :dialogCurrent="dialogCurrent"  @clicked="onDialogStorehouse" />
+      <dialogMine :dialog="dialogMine" :resources="resources" :editingMine="editingMine" :dialogCurrent="dialogCurrent"  @clicked="onDialogMine" />
       <!-- <button @click="test">test</button> -->
     </div>
   </div>
@@ -400,6 +422,8 @@
 <script>
 import dialogSpecialBuilding from '@/components/elements/dialogSpecialBuilding'
 import dialogProvisionHouse from '@/components/elements/buildings/dialogProvisionHouse'
+import dialogStorehouse from '@/components/elements/buildings/dialogStorehouse'
+import dialogMine from '@/components/elements/buildings/dialogMine'
 
 export default {
   head() {
@@ -407,10 +431,14 @@ export default {
   },
   components: {
     dialogSpecialBuilding,
-    dialogProvisionHouse
+    dialogProvisionHouse,
+    dialogStorehouse,
+    dialogMine,
   },
   data() {
     return {
+      renderBuldingList: ['basic', 'intermediate'],
+
       originList: ['basic', 'someOne'],
       currentOrigins: ['basic'],
       typeList: ['workshop', 'special'], // special mean's whan no have some type building evryware
@@ -763,6 +791,12 @@ export default {
       dialogProvisionHouse: false,
       editingProvisionHouse: null,
 
+      dialogStorehouse: false,
+      editingStorehouse: null,
+
+      dialogMine: false,
+      editingMine: null,
+
       e1: 1,
 
       resources: {},
@@ -781,12 +815,12 @@ export default {
       }
       return list
     },
-    sortBuildings() {
+    basicBuildings() {
       let arrBuildings = []
       for(let building in this.buildings) {
+        // if(building)
         arrBuildings.push(this.buildings[building])
       }
-      console.log('this.arrBuildings', arrBuildings.sort((a, b) => a.weight - b.weight))
       return arrBuildings.sort((a, b) => a.weight - b.weight)
     }
 
@@ -838,6 +872,8 @@ export default {
       // }
     },
     dialogEdit(slug) {
+      console.log('slug: ', slug);
+
       if(slug === 'tavern') {
         this.editingSpecBuilding = this.buildings[slug]
         this.dialogCurrent = 'Edit'
@@ -846,6 +882,14 @@ export default {
         this.editingProvisionHouse = this.buildings[slug]
         this.dialogCurrent = 'Edit'
         this.dialogProvisionHouse = true
+      } else if(slug === 'storehouse') {
+        this.editingStorehouse = this.buildings[slug]
+        this.dialogCurrent = 'Edit'
+        this.dialogStorehouse= true
+      } else if(slug === 'copper-mine') {
+        this.editingMine = this.buildings[slug]
+        this.dialogCurrent = 'Edit'
+        this.dialogMine= true
       } else {
 
         this.building = this.buildings[slug]
@@ -933,7 +977,13 @@ export default {
       } else {
         this.dialogProvisionHouse = false
       }
-    }
+    },
+    onDialogStorehouse(data) {
+      this.dialogStorehouse = false
+    },
+    onDialogMine(data) {
+      this.dialogMine = false
+    },
   }
 }
 </script>
@@ -986,5 +1036,18 @@ img.preview {
 }
 .text-link, .level-text {
   align-self: center;
+}
+.buiiding-type-title {
+  text-transform: capitalize;
+  margin-top: 20px;
+}
+.edit-building {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  display: none;
+}
+.building:hover .edit-building {
+  display: block;
 }
 </style>
