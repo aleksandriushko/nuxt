@@ -59,7 +59,7 @@
                         <v-text-field v-model="resource.slug" :label="$t('labels.slug')" disabled_ />
                       </v-col>
                       <v-col cols="12" sm="12" md="12">
-                        <v-text-field v-model="imageUrl" label="$t('labels.imageUrl')" disabled_ />
+                        <v-text-field v-model="resource.imageUrl" label="$t('labels.imageUrl')" disabled_ />
                       </v-col>
                     </v-row>
                   </v-container>
@@ -282,9 +282,8 @@ export default {
         })
     },
     addResource() {
-      this.resource.slug = this.slug
-      this.resource.imageUrl = this.imageUrl
-      this.resource.name.default = this.resource.name.en
+      // this.resource.slug = this.slug
+      // this.resource.imageUrl = this.imageUrl
 
       this.$store.dispatch('resources/add', this.resource)
         .then(res => {

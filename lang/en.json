@@ -60,18 +60,7 @@
     "basicTypeDescription": "Эти знания доступны с самого начала игры и вы будете получать даступ к новым зданиям по мере повышения уровня",
     "traderTypeDescription": "Эти здания можно получать только за кристалы у торговцца",
     "title": "Buildings",
-    "addProdBuilding": "Add Prod Building",
-    "addSpecBuilding": "Add SpecBuilding",
-    "addProvisionHouse": "Add Provision House",
-    "addStorehouse": "Add Storehouse",
-    "addMine": "Add Mine",
-    "labelProductionResourceSlug": "Production Resource",
-    "labelProductionResourceSeconds": "Seconds",
-    "labelProductionResourceMinutes": "Minutes",
-    "labelProductionResourceHours": "Hours",
-    "labelProductionResourceDays": "Days",
     "labelConsumptionResource1Slug": "Consumption Resource 1",
-    "labelConsumptionResource1Amount": "Amount",
     "labelDestroyReturnResources1Slug": "Destroy Return Resources 1",
     "labelRequiredLevel": "Required Level",
     "labelNeedPatent": "Patent",
@@ -80,12 +69,52 @@
     "labelMoveResource": "Move Resource",
     "labelMoveResourcePremium": "Move Resource Premium Amount",
     "labelUpgradeResourcePremium": "Upgrade Resource Premium Amount",
-    "labelWeight": "Weight",
+    "labelReturnToStarMenu": "Return to Star Menu",
+    "labelPlacedOnWater": "Placed on Water",
     "labelSizeX": "Size X",
     "labelSizeY": "Size Y",
     "titleStorageCapacities": "Storage Capacities",
-    "labelStorageCapacity": "Storage Capacity",
+    "titlePopulation": "Population",
+    "labelPopulation": "Population",
+    "btnShowTable": "Show Table",
     "end...": "...end"
+  },
+  "building": {
+    "production": "Production",
+    "consumption": "Consumption",
+    "timeProduction": "Time Production",
+    "tabComments": "Comments",
+    "tabImages": "Images",
+    "tabMoveCost": "Move Cost",
+    "tabBuildUpgrade": "Build & Upgrade",
+    "tabInformation": "Information",
+    "destroyReturnResources": "Destroy Return Resources",
+    "requiredLevel": "Required Level",
+    "returnToStarMenu": "Return to Star Menu",
+    "canMove": "Can Move",
+    "needPatent": "Need Patent",
+    "placedOnWater": "Placed on Water",
+    "size": "Size",
+    "constructionTime": "Construction Time",
+    "population": "Population",
+    "totalPopulation": "Total Population",
+    "end...": "...end",
+    "tavern": {
+      "specialist": "Specialist"
+    },
+    "provisionHouse": {
+      "buffs": "Buffs",
+      "deposits": "Deposits",
+      "timeProduction": "Time Production",
+      "effect": "Effect",
+      "result": "Result",
+      "end...": "...end"
+    },
+    "storehouse": {
+      "storageCapacities": "Storage Capacities",
+      "totalStorageCapacities": "Total Storage Capacities",
+      "end...": "...end"
+    }
   },
   "resources": {
     "title": "Resources",
@@ -193,6 +222,8 @@
     "productionResource": "Production Resource",
     "moveResource": "Move Resource",
     "upgradeResource": "Upgrade Resource",
+    "destroyReturnResource": "Destroy Return Resource",
+    "depositResource": "Deposit Resource",
     "end...": "...end"
   },
   "buttons": {
@@ -204,9 +235,40 @@
   "titles": {
     "moveCost": "Move cost",
     "upgradeCost": "Upgrade cost",
+    "destroyReturnResources": "Destroy Return Resources",
+    "constructionCost": "Construction Cost",
+    "production": "Production",
+    "moveBuilding": "Move Building",
+    "end...": "...end"
+  },
+  "tabs": {
+    "main": "Main",
+    "images": "Images",
+    "move": "Move",
+    "build": "Build",
+    "production": "Production",
+    "storageCapacities": "Storage Capacities",
+    "wheatfield": "Wheatfield",
+    "deposit": "Deposit",
+    "special": "Special",
+    "population": "Population",
     "end...": "...end"
   },
   "layout": {
     "topBarTitle": "Application"
+  },
+  "text": {
+    "yes": "Yes",
+    "no": "No",
+    "add": "Add",
+    "edit": "Edit",
+    "level": "Level",
+    "lvl": "lvl",
+    "name": "Name",
+    "deposit": "Deposit",
+    "amount": "Amount",
+    "resources": "Resources",
+    "gemsCost": "Gems Cost",
+    "end...": "...end"
   }
 }

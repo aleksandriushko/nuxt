@@ -76,7 +76,7 @@ export default {
     "nuxt-interpolation"
   ],
 
-  plugins: ["plugins/i18n.js"],
+  plugins: ["plugins/i18n.js", "plugins/dayjs.js"],
 
   // Router settings
   router: {

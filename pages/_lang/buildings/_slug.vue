@@ -4,64 +4,55 @@
       <div class="container no-transition">
         <v-breadcrumbs :items="breadcrumps" divider="-"/>
 
-        <tavern v-if="building.slug === 'tavern'" :building="building" />
+        <!-- <tavern v-if="building.slug === 'tavern'" :building="building" /> -->
+        <!-- <tavern v-if="building.slug === 'tavern'" :contentTavern="contentTavern" /> -->
 
-        <provisionHouse v-else-if="building.slug === 'provision-house'" :building="building" :resources="resources" />
+        <!-- <provisionHouse v-else-if="building.slug === 'provision-house'" :building="building" :resources="resources" /> -->
 
-        <storehouse v-else-if="building.slug === 'storehouse'" :building="building" :resources="resources" />
+        <!-- <storehouse v-else-if="building.slug === 'storehouse'" :building="building" :resources="resources" /> -->
 
-        <template v-else>
-          <v-row>
+        <template>
+          <v-row v-if="showTab[0]">
             <v-col cols="1" sm="1" md="1">
-              <img :src="building.images.icon.url" alt="" v-if="building.images.icon.url">
+              <img :src="building.imageIconUrl" alt="">
             </v-col>
-            <v-col cols="10" sm="10" md="10">
-              <h1>{{ building.name.en }}</h1>
+            <v-col cols="8" sm="8" md="8">
+              <h1>{{ building.name[$i18n.locale] }}</h1>
+            </v-col>
+            <v-col cols="3" sm="3" md="3">
+              <h1>{{ $t('building.size') }}: {{ building.size.x }} x {{ building.size.y }}</h1>
             </v-col>
           </v-row>
-          <v-row>
-            <v-col cols="12">
+          <v-row v-if="showTab[0]">
+            <v-col cols="8">
               <div v-interpolation v-html="parseDescription"></div>
+              <div class="game-description">{{ building.gameDescription[$i18n.locale] }}</div>
             </v-col>
-          </v-row>
+            <v-col cols="4" v-if="checkBuildingType(['workshop', 'deposit', 'mine'])">
+              <v-card max-width="344" outlined>
+                <v-list-item class="grow">
+                    {{ $t('building.production') }}: {{ building.productionResource.amount }} x <img :src="resources[building.productionResource.slug].imageUrl" alt="" class="resource-icon">
+                  <v-list-item-content>
+                    <v-list-item-title>
+                      <div> <strong>{{ resources[building.productionResource.slug].name[$i18n.locale] }}</strong></div>
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
 
-          <v-row>
-            <v-col cols="6">
-              <v-card max-width="344" outlined>
-                <v-list-item class="grow">
-                    Production: {{ building.productionResource.amount }} x <img :src="production.imageUrl" alt="" class="resource-icon">
+                <v-list-item class="grow" v-for="(resource, idx) in building.consumptionResources" :key="'consumption=resources' + idx">
+                    {{ $t('building.consumption') }}: {{ resource.amount }} x <img :src="resources[resource.slug].imageUrl" alt="" class="resource-icon">
                   <v-list-item-content>
                     <v-list-item-title>
-                      <div> <strong>{{ production.name.en }}</strong></div>
-                    </v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item class="grow">
-                    Consumption: {{ building.consumptionResource1.amount }} x <img :src="consumptionResource1.imageUrl" alt="" class="resource-icon">
-                  <v-list-item-content>
-                    <v-list-item-title>
-                      <div><strong>{{ consumptionResource1.name.en }}</strong> </div>
-                    </v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-card>
-            </v-col>
-            <v-col cols="6">
-              <v-card max-width="344" outlined>
-                <v-list-item class="grow">
-                    Time Production:
-                  <v-list-item-content>
-                    <v-list-item-title>
-                      <div> {{ productionTime }}</div>
+                      <div><strong>{{ resources[resource.slug].name[$i18n.locale] }}</strong></div>
                     </v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
 
                 <v-list-item class="grow">
-                    Size:
+                    {{ $t('building.timeProduction') }}:
                   <v-list-item-content>
                     <v-list-item-title>
-                      {{ building.size.x }} x {{ building.size.y }}
+                      <div> {{ formatTime(building.productionResource.time) }}</div>
                     </v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
@@ -70,8 +61,15 @@
             </v-col>
           </v-row>
 
-          <v-tabs v-model="tab" >
-            <v-tab v-for="item in items" :key="item.tab">
+          <v-row v-if="showTab[0]">
+            <v-col cols="12">
+              <contentTavern v-if="building.slug === 'tavern'" :resourceCoins="resources.coins" />
+              <contentProvisionHouse v-else-if="building.slug === 'provision-house'" :building="building" :resources="resources" />
+            </v-col>
+          </v-row>
+
+          <v-tabs v-model="tab">
+            <v-tab v-for="item in tabItems" :key="item.tab">
               {{ item.tab }}
             </v-tab>
           </v-tabs>
@@ -79,68 +77,130 @@
             <v-tab-item>
                 <v-card-text>1</v-card-text>
             </v-tab-item>
-            <v-tab-item>
-              <img :src="building.images.image1.url" alt="" v-if="building.images.image1.url">
-              <img :src="building.images.image2.url" alt="" v-if="building.images.image2.url">
-              <img :src="building.images.image3.url" alt="" v-if="building.images.image3.url">
-              <img :src="building.images.image4.url" alt="" v-if="building.images.image4.url">
-              <img :src="building.images.image5.url" alt="" v-if="building.images.image5.url">
-              <img :src="building.images.image6.url" alt="" v-if="building.images.image6.url">
-              <img :src="building.images.image7.url" alt="" v-if="building.images.image7.url">
+            <v-tab-item v-if="showTab[2]">
+              <img v-for="url in building.imageUrls" :key="url" alt="" :src="url">
             </v-tab-item>
-            <v-tab-item>
+
+            <!-- MOVE -->
+            <v-tab-item v-if="building.canMove && showTab[3]">
               <v-simple-table>
                 <template v-slot:default>
                   <thead>
                     <tr>
                       <th class="text-left">
-                        Level
+                        {{ $t('text.level') }}
                       </th>
                       <th class="text-left">
-                        Resources
+                        {{ $t('text.resources') }}
                       </th>
                       <th class="text-left">
-                        Gems cost
+                        {{ $t('text.gemsCost') }}
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr
-                      v-for="(val, prop, idx ) in building.moveCost"
-                      :key="idx"
-                    >
+                    <tr v-for="(item, idx) in building.moveCost" :key="idx">
                       <td>{{ idx + 1 }}</td>
                       <td>
-                        <img :src="getResourceIconUrl(val.resource1.slug)" alt="">{{ val.resource1.amount }}
-                        <img :src="getResourceIconUrl(val.resource2.slug)" alt="">{{ val.resource2.amount }}
+                        <div class="resources-cell">
+                          <div v-for="(resource, index) in item.resources" :key="'move-res-key' + index">
+                            <NuxtLink :to="`/resources/${resource.slug}`"><img :src="resources[resource.slug].imageUrl" alt=""></NuxtLink>
+                            {{ resource.amount }}
+                          </div>
+                        </div>
                       </td>
-                      <td><img :src="getResourceIconUrl('gems')" alt="">{{ val.premium.amount }}</td>
+                      <td>
+                        <div class="resources-cell">
+                          <NuxtLink :to="`/resources/gems`"><img :src="resources.gems.imageUrl" alt=""></NuxtLink>
+                          {{ item.premiumCost }}
+                        </div>
+                      </td>
                     </tr>
                   </tbody>
                 </template>
               </v-simple-table>
             </v-tab-item>
-            <v-tab-item>
+            <v-tab-item v-else-if="building.storageCapacities && showTab[3]">
               <v-simple-table>
                 <template v-slot:default>
                   <thead>
                     <tr>
                       <th class="text-left">
-                        Level
+                        {{ $t('text.level') }}
                       </th>
                       <th class="text-left">
-                        Resources
+                        {{ $t('building.storehouse.storageCapacities') }}
                       </th>
                       <th class="text-left">
-                        Gems cost
-                      </th>
-                      <th class="text-left">
-                        Build time
+                        {{ $t('building.storehouse.totalStorageCapacities') }}
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="(val, prop, idx ) in building.upgradeCost" :key="idx">
+                    <tr v-for="(val, idx) in building.storageCapacities" :key="idx">
+                      <td>{{ idx + 1 }}</td>
+                      <td>{{ val }}</td>
+                      <td>{{ totalStorageCapacities[idx] }}</td>
+                    </tr>
+                  </tbody>
+                </template>
+              </v-simple-table>
+            </v-tab-item>
+
+            <v-tab-item v-else-if="(additionalTab === 'wheatfield' || additionalTab === 'deposit') && showTab[3]">
+              <div>
+                {{ $t('text.deposit') }}
+                <NuxtLink :to="`/resources/${building.deposit.resourceSlug}`"><img :src="resources[building.deposit.resourceSlug].imageUrl" alt=""></NuxtLink>
+              </div>
+              <div>{{ $t('text.amount') }} {{ building.deposit.amount }}</div>
+            </v-tab-item>
+
+
+
+
+
+            <v-tab-item v-if="showTab[4]">
+              <v-simple-table>
+                <template v-slot:default>
+                  <thead>
+                    <tr>
+                      <th class="text-left">
+                        {{ $t('text.level') }}
+                      </th>
+                      <th class="text-left">
+                        {{ $t('text.resources') }}
+                      </th>
+                      <th class="text-left">
+                        {{ $t('text.gemsCost') }}
+                      </th>
+                      <th class="text-left">
+                        {{ $t('building.constructionTime') }}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(item, idx) in building.upgradeCost" :key="idx">
+                      <td>{{ idx + 1 }}</td>
+                      <td>
+                        <div class="resources-cell">
+                          <div v-for="(resource, index) in item.resources" :key="'move-res-key' + index">
+                            <NuxtLink :to="`/resources/${resource.slug}`"><img :src="resources[resource.slug].imageUrl" alt=""></NuxtLink>
+                            {{ resource.amount }}
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="resources-cell">
+                          <NuxtLink :to="`/resources/gems`"><img :src="resources.gems.imageUrl" alt=""></NuxtLink>
+                          {{ item.premiumCost }}
+                        </div>
+                      </td>
+                      <td>
+                        {{ formatTime(item.time) }}
+                      </td>
+                    </tr>
+
+                    <!-- <tr v-for="(val, prop, idx ) in building.upgradeCost" :key="idx">
                       <td>{{ idx + 1 }}</td>
                       <td>
                         <img :src="getResourceIconUrl(val.resource1.slug)" alt="">{{ val.resource1.amount }}
@@ -149,8 +209,8 @@
                         </template>
                       </td>
                       <td><img :src="getResourceIconUrl('gems')" alt="">{{ val.premium.amount }}</td>
-                      <td>
-                        <template v-if="val.time.seconds && !val.time.minutes">
+                      <td> -->
+                        <!-- <template v-if="val.time.seconds && !val.time.minutes">
                           {{ val.time.seconds }} seconds
                         </template>
                         <template v-else-if="val.time.seconds && val.time.minutes">
@@ -161,44 +221,108 @@
                         </template>
                         <template v-else-if="val.time.days">
                           {{ val.time.days }} days
-                        </template>
+                        </template> -->
+                      <!-- </td> -->
+                    <!-- </tr> -->
+                  </tbody>
+                </template>
+              </v-simple-table>
+              <a href="/">'See upgrade table'</a>
+            </v-tab-item>
+
+
+            <v-tab-item v-if="additionalTab === 'population' && showTab[3]">
+
+              <v-simple-table>
+                <template v-slot:default>
+                  <thead>
+                    <tr>
+                      <th class="text-left">
+                        {{ $t('text.level') }}
+                      </th>
+                      <th class="text-left">
+                        {{ $t('building.population') }}
+                      </th>
+                      <th class="text-left">
+                        {{ $t('building.totalPopulation') }}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(val, idx) in building.population" :key="idx">
+                      <td>{{ idx + 1 }}</td>
+                      <td>
+                        <div class="population-wrap">
+                          <NuxtLink :to="`/resources/settlers`"><img :src="resources.settlers.imageUrl" alt=""></NuxtLink>
+                          {{ idx === 0 ? val : `+ ${val}` }}
+                        </div>
+                      </td>
+                      <td>
+                        <div class="population-wrap">
+                          <NuxtLink :to="`/resources/settlers`"><img :src="resources.settlers.imageUrl" alt=""></NuxtLink>{{ totalPopulation[idx] }}
+                        </div>
                       </td>
                     </tr>
                   </tbody>
                 </template>
               </v-simple-table>
             </v-tab-item>
-            <v-tab-item>
 
+            <v-tab-item v-if="showTab[5]">
                 <v-list-item class="grow">
-                    Need patent:
+                  {{ $t('building.needPatent') }}:
                   <v-list-item-content>
                     <v-list-item-title>
-                      {{ building.needPatent ? 'yes' : 'no' }}
+                      {{ building.needPatent ? $t('text.yes') : $t('text.no') }}
                     </v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
                 <v-list-item class="grow">
-                    Can move:
+                  {{ $t('building.canMove') }}:
                   <v-list-item-content>
                     <v-list-item-title>
-                      {{ building.canMove ? 'yes' : 'no' }}
+                      {{ building.canMove ? $t('text.yes') : $t('text.no') }}
                     </v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
-                <v-list-item class="grow">
-                    Required Level:
+                <v-list-item class="grow" v-if="building.requiredLevel">
+                  {{ $t('building.requiredLevel') }}:
                   <v-list-item-content>
                     <v-list-item-title>
                       {{ building.requiredLevel }}
                     </v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
+
                 <v-list-item class="grow">
-                    Return Resources: {{ building.destroyReturnResources.resource1.amount }} x <img :src="destroyReturnResource1.imageUrl" alt="" class="resource-icon">
+                  {{ $t('building.placedOnWater') }}:
                   <v-list-item-content>
                     <v-list-item-title>
-                      <div><strong>{{ destroyReturnResource1.name.en }}</strong> </div>
+                      {{ building.placedOnWater ? $t('text.yes') : $t('text.no') }}
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+
+
+                <v-list-item v-if="building.returnToStarMenu" class="grow">
+                  {{ $t('building.returnToStarMenu') }}:
+                  <v-list-item-content>
+                    <v-list-item-title>
+                      {{ building.returnToStarMenu ? $t('text.yes') : $t('text.no') }}
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item v-else class="grow">
+                  {{ $t('building.destroyReturnResources') }}:
+                  <v-list-item-content v-for="(resource, idx) in building.destroyReturnResources" :key="'buff-key-' + idx">
+                    <v-list-item-title>
+                      <div>
+                        <strong>
+                          {{ resource.amount }} x
+                          <NuxtLink :to="`/resources/${resource.slug}`"><img :src="resources[resource.slug].imageUrl" alt=""></NuxtLink>
+                          {{ resources[resource.slug].name[$i18n.locale] }}
+                        </strong>
+                      </div>
                     </v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
@@ -223,14 +347,17 @@
 
 <script>
 import firebase from 'firebase';
-import tavern from '@/components/pages/buildings/tavern';
-import provisionHouse from '@/components/pages/buildings/provisionHouse';
+import contentTavern from '@/components/content/buildings/tavern';
+// import provisionHouse from '@/components/pages/buildings/provisionHouse';
+import contentProvisionHouse from '@/components/content/buildings/provisionHouse';
 import storehouse from '@/components/pages/buildings/storehouse';
 
 export default {
   components: {
-    tavern,
-    provisionHouse,
+    contentTavern,
+    contentProvisionHouse,
+    // tavern,
+    // provisionHouse,
     storehouse
   },
   head() {
@@ -238,6 +365,14 @@ export default {
   },
   data() {
     return {
+      showTab: {
+        0: true,
+        1: true,
+        2: true,
+        3: true,
+        4: true,
+        5: true,
+      },
       breadcrumps: [
         {
           text: 'Home',
@@ -255,53 +390,166 @@ export default {
         },
       ],
       tab: null,
-      items: [
-        { tab: 'Comments', content: 'Tab 1 Content' },
-        { tab: 'Images', content: 'Tab 2 Content' },
-        { tab: 'Move Cost', content: 'Tab 3 Content' },
-        { tab: 'Build & Upgrade', content: 'Tab 4 Content' },
-        { tab: 'Information', content: 'Tab 5 Content' },
+      tabItems: [
+        { tab: this.$t('building.tabComments'), content: 'Tab 1 Content' },
+        { tab: this.$t('building.tabImages'), content: 'Tab 2 Content' },
+        { tab: this.$t('building.tabMoveCost'), content: 'Tab 3 Content' },
+        { tab: this.$t('building.tabBuildUpgrade'), content: 'Tab 4 Content' },
+        { tab: this.$t('building.tabInformation'), content: 'Tab 5 Content' },
       ],
+      additionalTab: '',
       building: {},
-      production: {},
       consumptionResource1: {},
       buildingLoaded: false,
-      resources: {}
+      resources: {},
+
+      totalStorageCapacities: [],
+      totalPopulation: [],
+
     }
   },
   computed: {
-    productionTime() {
-      if(this.building.productionResource.time.horse || this.building.productionResource.time.day) {
-        return ''
-      } else {
-        return this.building.productionResource.time.minutes + ':' + this.building.productionResource.time.seconds
-      }
-    },
     parseDescription() {
       let text = this.building.description.en
       return this.recuriveText(text)
     }
   },
   async created() {
+
+    // this.showTab[0] = false // main
+    // this.showTab[1] = false // main
+    // this.showTab[2] = false // images
+    // this.showTab[3] = false // build
+    // this.showTab[4] = false // move
+    // this.showTab[5] = false // spec
+
     this.title = this.$route.params.slug
     this.building = await this.$store.dispatch('buildings/get', this.$route.params.slug)
-    console.log('this.building: ', this.building);
+    console.log('this.building 1: ', this.building);
     this.breadcrumps[2].text = this.building.name.en
-    if(this.building.slug !== 'tavern' && this.building.slug !== 'provision-house' && this.building.slug !== 'storehouse') {
-      this.production = await this.$store.dispatch('resources/get', this.building.productionResource.slug)
-      this.consumptionResource1 = await this.$store.dispatch('resources/get', this.building.consumptionResource1.slug)
-    }
-    console.log('this.building3: ', this.building);
 
-    if(this.building.slug !== 'storehouse') { // удалить проверку, когда переделаю ресурсы без цифр, а массивами
-      this.destroyReturnResource1 = await this.$store.dispatch('resources/get', this.building.destroyReturnResources.resource1.slug)
-    }
     this.resources = await this.$store.dispatch('resources/getAll')
     console.log('this.resources: ', this.resources);
+
+
+    for(let i = 0; i < this.building.types.length; i++) {
+      if(this.building.types[i] === "storehouse") {
+        this.tabItems[2].tab = this.$t('tabs.storageCapacities')
+
+        let amount = 0
+        this.building.storageCapacities.forEach(element => {
+          this.totalStorageCapacities.push(amount += element)
+        })
+        break
+      }
+      if(this.building.types[i] === "wheatfield") {
+        this.tabItems[2].tab = this.$t('tabs.deposit')
+        this.additionalTab = 'wheatfield'
+        break
+      }
+      if(this.building.types[i] === "deposit") {
+        this.tabItems[2].tab = this.$t('tabs.deposit')
+        this.additionalTab = 'deposit'
+        break
+      }
+      if(this.building.types[i] === "population") {
+        this.tabItems.splice(4, 0, { tab: "Population" });
+        this.additionalTab = 'population'
+        console.log('this.additionalTab: ', this.additionalTab);
+
+        let amount = 0
+        this.building.population.forEach(element => {
+          this.totalPopulation.push(amount += element)
+        })
+        break
+      }
+    }
+
+    for(let i = 0; i < this.building.types.length; i++) {
+      if(this.building.types[i] === "mine") {
+        this.tabItems.splice(2, 1)
+        break
+      }
+    }
 
     this.buildingLoaded = true
   },
   methods: {
+    checkBuildingType(checkTypes) {
+      for(const element of checkTypes) {
+        for(const prop in this.building.types) {
+          if(this.building.types[prop] === element) return true
+        }
+      }
+    },
+    formatTime(time) {
+      console.log('time: ', time);
+      window.dayjs = this.$dayjs
+      const loc = this.$i18n.locale
+      // const loc = 'en'
+      // const loc = 'ru'
+
+
+      let min, sec, day, hour
+
+      if(loc === 'en') {
+        if(time.minutes == 1 && time.minutes) {
+          min = '1 minute'
+        } else {
+          min = time.minutes + ' minutes'
+        }
+        if(time.seconds == 1 && time.minutes) {
+          sec = '1 second'
+        } else {
+          sec = time.seconds + ' seconds'
+        }
+        if(time.days == 1 && time.days) {
+          day = '1 day'
+        } else {
+          day = time.days + ' days'
+        }
+        if(time.hours == 1 && time.hours) {
+          hour = '1 hour'
+        } else {
+          hour = time.hours + ' hours'
+        }
+      }
+
+      function num2str(n, text_forms) {
+        n = Math.abs(n) % 100
+        var n1 = n % 10
+        if (n > 10 && n < 20) {
+          return text_forms[2]
+        }
+        if (n1 > 1 && n1 < 5) {
+          return text_forms[1]
+        }
+        if (n1 == 1) {
+          return text_forms[0]
+        }
+        return text_forms[2]
+      }
+      if(loc === 'ru') {
+        if(time.minutes) min = time.minutes + num2str(time.minutes, [' минута', ' минуты', ' минут'])
+        if(time.seconds) sec = time.seconds + num2str(time.seconds, [' секунда', ' секунды', ' секунд'])
+        if(time.days)    day = time.days + num2str(time.days, [' день', ' дня', ' дней'])
+        if(time.hours)   hour = time.hours + num2str(time.hours, [' час', ' часа', ' часов'])
+      }
+
+      if(time.seconds && !time.minutes) {
+        return `${sec}`
+      } else if(time.seconds && time.minutes) {
+        return `${min}, ${sec}`
+      } else if(!time.seconds && time.minutes) {
+        return `${min}`
+      } else if(time.hours) {
+        return `${hour}`
+      } else if(time.days) {
+        return `${day}`
+      } else {
+        return 'ERROR: no correct time format'
+      }
+    },
     recuriveText(text, startPoint = 0) {
       console.log('startPoint: ', startPoint);
       // return text
@@ -415,5 +663,16 @@ export default {
   }
   a.building-link {
     color: #bc7a10;
+  }
+  .game-description {
+    color: #6d6d6d;
+    font-style: italic;
+  }
+  .population-wrap {
+    display: flex;
+    align-items: center;
+  }
+  .population-wrap img {
+    margin-right: 6px;
   }
 </style>

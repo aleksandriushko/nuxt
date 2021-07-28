@@ -7,6 +7,7 @@
         </v-col>
         <v-col cols="10" sm="10" md="10">
           <h1>{{ building.name.en }}</h1>
+          <!-- LOCATION -->
         </v-col>
       </v-row>
       <v-row>
