@@ -14,7 +14,8 @@
     "geologists": "Geologists",
     "generals": "Generals",
     "marshals": "Marshals",
-    "buffs": "Buffs"
+    "buffs": "Buffs",
+    "units": "Units"
   },
   "login": {
     "title": "Login",
@@ -77,6 +78,7 @@
     "titlePopulation": "Population",
     "labelPopulation": "Population",
     "btnShowTable": "Show Table",
+    "btnHideTable": "Hide Table",
     "end...": "...end"
   },
   "building": {
@@ -226,6 +228,22 @@
     "depositResource": "Deposit Resource",
     "end...": "...end"
   },
+  "units": {
+    "title": "Units",
+    "tabBarracks": "Barracks",
+    "labelInitiativeList": "Initiative List",
+    "labelAbilitiesList": "Abilities List",
+    "labelHitpoints": "Hitpoints",
+    "labelAccuracy": "Accuracy",
+    "labelMinDamage": "Min Damage",
+    "labelMaxDamage": "Max Damage",
+    "labelDamage": "Damage",
+    "labelStackSize": "Stack Size",
+    "labelExperiencePoints": "Experience Points",
+    "labelBonusVsUnit": "Bonus Vs Unit",
+    "labelBonusAmount": "Bonus Amount",
+    "end...": "...end"
+  },
   "buttons": {
     "add": "Add",
     "edit": "Edit",
@@ -252,6 +270,7 @@
     "deposit": "Deposit",
     "special": "Special",
     "population": "Population",
+    "characteristics": "Characteristics",
     "end...": "...end"
   },
   "layout": {

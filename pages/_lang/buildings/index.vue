@@ -2,20 +2,49 @@
   <div class="Content" v-if="buildingsLoaded">
     <div class="container">
 
-      <v-btn small @click="testDialog()">
-        {{ $t('text.add') }}
-      </v-btn>
+      <v-row>
+        <v-col cols="6">
+          <v-btn small @click="testDialog()">
+            {{ $t('text.add') }}
+          </v-btn>
+        </v-col>
+        <v-col cols="6">
+          <v-btn small @click="showTableBuildings = !showTableBuildings">
+            {{ showTableBuildings ? $t('buildings.btnShowTable') : $t('buildings.btnHideTable') }}
+          </v-btn>
+<!-- {{ type }} -->
+          <v-radio-group v-model="filters.type" row>
+          <!-- <v-radio-group v-model="type" row> -->
+            <v-radio label="Move" value="move" />
+            <v-radio label="Upgrade" value="upgrade" />
+          </v-radio-group>
+
+          <!-- <v-switch v-model="filters.showElements.premium" :label="`Switch 1: ${switch1.toString()}`" /> -->
+          <!-- <v-btn small @click="showTableBuildings = !showTableBuildings">
+            {{ showTableBuildings ? $t('buildings.btnShowTable') : $t('buildings.btnHideTable') }}
+          </v-btn> -->
+          <!-- show time
+          show premium
+
+          filters: {
+        type: 'upgrade',
+        showElements: {
+          premium: false,
+          time: true,
+        } -->
+      <!-- } -->
+
+        </v-col>
+      </v-row>
 
 
-      <v-btn small @click="showTableBuildings = !showTableBuildings">
-        {{ $t('buildings.btnShowTable') }}
-      </v-btn>
+
 
       <h1 class="Content__Title">
         {{ $t('buildings.title') }}
       </h1>
 
-      <tableBuildings v-if="showTableBuildings" :buildings="buildings" :resources="resources" />
+      <tableBuildings v-if="showTableBuildings" :filters="filters" :buildings="buildings" :resources="resources" />
 
       <div v-for="(buildingType, idx) in renderBuldingList" :key="'buildings' + idx" v-else>
         <h2 class="buiiding-type-title">{{ buildingType }}</h2>
@@ -56,7 +85,6 @@ export default {
     return {
       renderBuldingList: ['basic', 'intermediate', 'advanced', 'expert', 'elite'],
 
-      showTableBuildings: true,
 
       dialogBuilding: true,
       editingBuilding: null,
@@ -67,6 +95,14 @@ export default {
       buildingsLoaded: false,
 
       dialogCurrent: '',
+
+      showTableBuildings: false,
+      filters: {
+        type: 'upgrade',
+        showElements: {
+          premium: false
+        }
+      }
     }
   },
   computed: {

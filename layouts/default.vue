@@ -71,6 +71,16 @@
         </v-list-item>
 
 
+        <v-list-item link :to="$i18n.path('units')">
+          <v-list-item-action>
+            <v-icon>mdi-arrow-right</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>{{ $t('links.units') }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+
 
         <v-list-item link :to="$i18n.path('buildings/storehouse')">
           <v-list-item-action>

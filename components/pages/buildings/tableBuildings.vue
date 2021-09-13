@@ -42,31 +42,33 @@
                         </v-tooltip>
                       </div>
                     </td>
-                    <template v-for="lvl in 7">
-                      <td :key="'cost' + lvl" v-if="0">
-                        <div v-if="building.moveCost && building.moveCost[lvl-1]">
-                          <div class="d-flex justify-center cost-res-wrap">
-                            <template v-for="(resource, index) in building.moveCost[lvl-1].resources">
-                              <div :key="'cost-resource' + index" class="d-flex flex-column align-center">
-                                  <v-tooltip top open-delay="300">
-                                    <template v-slot:activator="{ on, attrs }">
-                                      <NuxtLink :to="`/resources/${resource.slug}`">
-                                        <img :src="resources[resource.slug].imageUrl" v-bind="attrs" v-on="on"  alt="">
-                                      </NuxtLink>
-                                    </template>
-                                    <span>{{ resources[resource.slug].name[$i18n.locale] }}</span>
-                                  </v-tooltip>
-                                  <span>{{ resource.amount }}</span>
-                              </div>
-                            </template>
+                    <template v-if="filters.type === 'move'">
+                      <template v-for="lvl in 7">
+                        <td :key="'cost' + lvl">
+                          <div v-if="building.moveCost && building.moveCost[lvl-1]">
+                            <div class="d-flex justify-center cost-res-wrap">
+                              <template v-for="(resource, index) in building.moveCost[lvl-1].resources">
+                                <div :key="'cost-resource' + index" class="d-flex flex-column align-center">
+                                    <v-tooltip top open-delay="300">
+                                      <template v-slot:activator="{ on, attrs }">
+                                        <NuxtLink :to="`/resources/${resource.slug}`">
+                                          <img :src="resources[resource.slug].imageUrl" v-bind="attrs" v-on="on"  alt="">
+                                        </NuxtLink>
+                                      </template>
+                                      <span>{{ resources[resource.slug].name[$i18n.locale] }}</span>
+                                    </v-tooltip>
+                                    <span>{{ resource.amount }}</span>
+                                </div>
+                              </template>
+                            </div>
                           </div>
-                        </div>
-                        <div v-else class="d-flex justify-center">-</div>
-                      </td>
+                          <div v-else class="d-flex justify-center">-</div>
+                        </td>
+                      </template>
                     </template>
 
 
-                    <template v-for="lvl in 7">
+                    <template v-for="lvl in 7" v-else>
                       <td :key="'cost' + lvl">
                         <div v-if="building.upgradeCost && building.upgradeCost[lvl-1]">
                           <div class="d-flex justify-center cost-res-wrap">
@@ -115,6 +117,9 @@ export default {
       type: Object
     },
     resources: {
+      type: Object
+    },
+    filters: {
       type: Object
     }
   },
