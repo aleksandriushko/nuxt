@@ -6,24 +6,42 @@
     "logout": "Выйти",
     "en": "en",
     "ru": "ru",
-    "about": "О нас"
+    "about": "О нас",
+    "buildings": "Здания",
+    "resources": "Продукция"
   },
   "login": {
     "title": "Вход",
     "description": "Введите данные в форму, для входа на сайт",
     "placeholderPassword": "Пароль",
     "btnRegistration": "Зарегистрироваться",
+    "btnForgot": "Забыли пароль?",
     "btnLogin": "Войти",
-    "btnGoHome": "На главную"
+    "btnGoHome": "На главную",
+    "errors": {
+      "auth/user-not-found": "Пароль или email указанны не верно"
+    }
   },
   "register": {
     "title": "Регистрация",
     "description": "Заполните данные для регистрации на сайте",
-    "placeholderName": "Имя",
+    "placeholderUsername": "Username",
     "placeholderPassword": "Пароль",
     "btnLogin": "Войти",
     "btnRegistration": "Зарегистрироваться",
-    "btnGoHome": "На главную"
+    "btnGoHome": "На главную",
+    "errors": {
+      "auth/email-already-in-use": "Пользователь с таким email уже существует"
+    }
+  },
+  "forgot": {
+    "title": "Забыли пароль?",
+    "description": "Введите адрес электронной почты на который будет выслано письмо с востановлением",
+    "btnForgot": "Отправить",
+    "emailSendSuccess": "Электронное письмо с инструкциями отправлено",
+    "errors": {
+      "auth/user-not-found": "Электронное письмо с инструкциями отправлено"
+    }
   },
   "home": {
     "title": "Главная"
@@ -31,6 +49,10 @@
   "about": {
     "title": "О нас",
     "introduction": "Эта страница создана, чтобы дать вам больше информации."
+  },
+  "buildings": {
+    "title": "Здания",
+    "addBuilding": "Добавить здание"
   },
   "layout": {
     "topBarTitle": "Приложение"

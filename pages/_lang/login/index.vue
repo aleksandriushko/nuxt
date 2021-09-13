@@ -1,59 +1,58 @@
 <template>
   <v-flex class="login-form text-center">
     <div class="display-1 mb-3">
-      <v-icon class="mr-2" large="large">mdi-account</v-icon> {{$t('login.title')}}
+      <v-icon class="mr-2" large="large">mdi-account</v-icon> {{ $t('login.title') }}
     </div>
     <v-card light="light">
-      <v-card-text>
-        <div class="subheading">
-          <template>{{$t('login.description')}}</template>
-        </div>
-        <validation-observer
-          ref="validator"
-        >
-          <form>
-            <validation-provider
-              v-slot="{ errors }"
-              name="email"
-              rules="required|email"
-            >
-              <v-text-field
-                v-model="account.email"
-                :error-messages="errors"
-                label="E-mail"
-                type="email"
-                prepend-icon="mdi-email"
-                required
-              ></v-text-field>
-            </validation-provider>
-            <validation-provider
-              v-slot="{ errors }"
-              name="password"
-              rules="required|min:6"
-            >
-              <v-text-field
-                v-model="account.password"
-                :error-messages="errors"
-                :label="$t('login.placeholderPassword')"
-                :type="showPassword ? 'text' : 'password'"
-                :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-                counter="true"
-                @click:append="showPassword = !showPassword"
-                prepend-icon="mdi-lock"
-                required
-              ></v-text-field>
-            </validation-provider>
-          </form>
-        </validation-observer>
-      </v-card-text>
-      <v-card-actions>
-        <v-col class="text-left">
-          <v-btn large link text :to="$i18n.path('register')" color="primary" class="reg-btn">{{ $t('login.btnRegistration') }}</v-btn>
-        </v-col>
-        <v-col class="text-right">
-          <v-btn large color="primary" class="white--text" @click.prevent="login" :disabled="!isValid">{{ $t('login.btnLogin') }}</v-btn>
-        </v-col>
-      </v-card-actions>
+      <form @submit="login">
+        <v-card-text>
+          <div class="subheading">
+            <template>{{ $t('login.description') }}</template>
+          </div>
+          <validation-observer ref="validator">
+              <validation-provider v-slot="{ errors }" name="email" rules="required|email" >
+                <v-text-field
+                  v-model="account.email"
+                  :error-messages="errors"
+                  label="E-mail"
+                  type="email"
+                  prepend-icon="mdi-email"
+                  required
+                  @input="isError = false"
+                />
+              </validation-provider>
+              <validation-provider v-slot="{ errors }" name="password" rules="required">
+                <v-text-field
+                  v-model="account.password"
+                  :error-messages="errors"
+                  :label="$t('login.placeholderPassword')"
+                  :type="showPassword ? 'text' : 'password'"
+                  :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+                  @click:append="showPassword = !showPassword"
+                  prepend-icon="mdi-lock"
+                  counter="true"
+                  @input="isError = false"
+                  required
+                />
+              </validation-provider>
+            <div class="v-messages error--text ml-8" role="alert" v-if="isError">
+                  {{ errMsg }}
+            </div>
+          </validation-observer>
+        </v-card-text>
+        <v-card-actions>
+          <v-col class="text-left">
+            <v-btn large link text :to="$i18n.path('register')" color="primary" class="reg-btn">{{ $t('login.btnRegistration') }}</v-btn>
+          </v-col>
+          <v-col class="text-left">
+            <v-btn large link text :to="$i18n.path('forgot')" color="primary" class="reg-btn">{{ $t('login.btnForgot') }}</v-btn>
+          </v-col>
+          <v-col class="text-right">
+            <v-btn large color="primary" type="submit" class="white--text" @click.prevent="login" :disabled="!isValid">{{ $t('login.btnLogin') }}</v-btn>
+          </v-col>
+
+        </v-card-actions>
+      </form>
     </v-card>
     <div>
       <v-btn link text :to="$i18n.path('')" class="mt-2">
@@ -62,16 +61,6 @@
       <v-btn class="mt-2" text :to="`/ru` + $route.fullPath" v-if="$i18n.locale === 'en'" active-class="none" exact>{{ $t('links.en') }}</v-btn>
       <v-btn class="mt-2" text :to="$route.fullPath.replace(/^\/[^\/]+/, '')" v-else active-class="none" exact>{{ $t('links.ru') }}</v-btn>
 
-
-      <!-- <el-dropdown @command="changeLang" split-button>
-        <span class="el-dropdown-link" style='cursor: pointer;'>
-          {{$t('home.lang')}}
-        </span>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command='en'>English</el-dropdown-item>
-          <el-dropdown-item command='cn'>中文</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown> -->
       <div @click="btnTest">
         btnLogin
       </div>
@@ -81,9 +70,7 @@
 </template>
 
 <script>
-// import validations from '@/utils/validations'
-
-  import { required, email, max, min } from 'vee-validate/dist/rules'
+  import { required, email} from 'vee-validate/dist/rules'
   import { extend, ValidationObserver, ValidationProvider, setInteractionMode, localize } from 'vee-validate'
   import en from '~/lang/validation/en.json';
   import ru from '~/lang/validation/ru.json';
@@ -92,52 +79,8 @@
 
   extend("required", required);
   extend("email", email);
-  extend("min", min);
 
   localize('en', en);
-
-  // extend('required', {
-  //   ...required,
-  //   message: '{_field_} can not be empty _',
-  // })
-
-  // extend('max', {
-  //   ...max,
-  //   message: '{_field_} may not be greater than {length} characters',
-  // })
-
-  // extend('email', {
-  //   ...email,
-  //   message: 'Email must be valid __',
-  // })
-
-// Install English and Arabic localizations.
-// localize({
-//   en: {
-//     messages: en.messages,
-//     names: {
-//       email: "E-mail Address 1",
-//       password: "Password 1"
-//     },
-//     fields: {
-//       password: {
-//         min: "{_field_} is too short, you want to get hacked?"
-//       }
-//     }
-//   },
-//   ru: {
-//     messages: ru.messages,
-//     names: {
-//       email: "электронная почта",
-//       password: "пароль"
-//     },
-//     fields: {
-//       password: {
-//         min: "миниммммм"
-//       }
-//     }
-//   }
-// });
 
 export default {
 
@@ -149,9 +92,9 @@ export default {
         password: ''
       },
       isError: false,
-      errMsg: '',
+      // errMsg: '',
       showPassword: false,
-      invalid: false,
+      // invalid: false,
       errors: null,
 
       isValid: false, // for disable submit when no valid (1 of 3)
@@ -170,15 +113,15 @@ export default {
       }
     },
     locale(lang) {
-      if(lang == 'en') {
+      if(lang === 'en') {
         localize('en', en);
-      } else if(lang == 'ru') {
+      } else if(lang === 'ru') {
         localize('ru', ru);
       }
     }
   },
   created() {
-    if(this.locale == 'ru') {
+    if(this.locale === 'ru') {
       localize('ru', ru);
     }
   },
@@ -190,34 +133,25 @@ export default {
       })
     },
     btnTest() {
-      console.log('Object.keys(this.fields)', this.locale)
+      this.errors = 'asd'
+      console.log('Object.keys(this.fields)', this.validator)
+          // console.log('testBtn', extend, ValidationObserver, ValidationProvider, setInteractionMode, localize)
+
       // console.log('Object.keys(this.fields)', this.$validator)
     },
     login(e) {
       // TODO: add parsing of data.
-      this.$store
-        .dispatch('users/login', this.account)
-        .then(() => {
-            this.$router.push('/admin')
-        })
+      this.$store.dispatch('users/login', this.account)
+        .then(() => this.$router.push('/admin'))
         .catch(error => {
+          console.log('error aaa', error)
+
+          if(error.code === "auth/user-not-found" || error.code === "auth/wrong-password") {
             this.isError = true
-            this.errMsg = error.code
-            setTimeout(() => {
-                this.isError = false
-            }, 5000)
+            this.errMsg = this.$t('login.errors.auth/user-not-found')
+          }
         })
     },
-    // submit () {
-    //   this.$refs.observer.validate()
-    // },
-    // clear () {
-    //   this.name = ''
-    //   this.email = ''
-    //   this.select = null
-    //   this.checkbox = null
-    //   this.$refs.observer.reset()
-    // }
   },
   components: {
     ValidationProvider,

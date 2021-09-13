@@ -1,28 +1,27 @@
-import JWTDecode from "jwt-decode"
-import cookieparser from "cookieparser"
+import JWTDecode from "jwt-decode";
+import cookieparser from "cookieparser";
 
 // import messagePlugin from '../plugins/message.plugin'
 // import Vue from 'vue'
 // Vue.use(messagePlugin)
 
 export const state = () => ({
-  error: null,
-  locales: ['en', 'ru'],
-  locale: 'ru'
-})
+  // error: null,
+  locales: ["en", "ru"],
+  locale: "ru"
+});
 
 export const mutations = {
-  SET_ERROR: (state, error) => {
-      console.log('SET_ERROR', error)
-      state.error = error
-  },
-  CLEAR_ERROR: (state) => {
-    state.error = null
-  },
-  SET_LANG (state, locale) {
+  // SET_ERROR: (state, error) => {
+  //     console.log('SET_ERROR', error)
+  //     state.error = error
+  // },
+  // CLEAR_ERROR: (state) => {
+  //   state.error = null
+  // },
+  SET_LANG(state, locale) {
     if (state.locales.includes(locale)) {
-      state.locale = locale
-
+      state.locale = locale;
 
       // state.lang = data;
       // i18n.locale = data;
@@ -31,15 +30,15 @@ export const mutations = {
       // localize('en', en);
     }
   }
-}
+};
 
 export const getters = {
   locale: state => state.locale
-}
+};
 
 export const actions = {
   nuxtServerInit({ commit }, { req }) {
-    console.log('nuxtServerInit')
+    console.log("nuxtServerInit");
     if (process.server && process.static) return;
     if (!req.headers.cookie) return;
 
@@ -57,6 +56,4 @@ export const actions = {
       });
     }
   }
-}
-
-
+};

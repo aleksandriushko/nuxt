@@ -1,9 +1,6 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer
-      v-model="drawer"
-      app
-    >
+    <v-navigation-drawer v-model="drawer" app >
       <v-list dense>
         <v-list-item link :to="$i18n.path('')">
           <v-list-item-action>
@@ -21,14 +18,84 @@
             <v-list-item-title>{{ $t('links.about') }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item link :to="$i18n.path('buildings')">
+          <v-list-item-action>
+            <v-icon>mdi-arrow-right</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>{{ $t('links.buildings') }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item link :to="$i18n.path('resources')">
+          <v-list-item-action>
+            <v-icon>mdi-arrow-right</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>{{ $t('links.resources') }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+
+
+        <!-- <v-list-item link :to="$i18n.path('specialists')">
+          <v-list-item-action>
+            <v-icon>mdi-arrow-right</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>{{ $t('links.specialists') }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item> -->
+
+
+        <v-list-group :value="false" prepend-icon="mdi-account-circle">
+          <template v-slot:activator>
+            <v-list-item-title>{{ $t('links.specialists') }}</v-list-item-title>
+          </template>
+
+            <v-list-item v-for="([title, icon, path], i) in specialists" :key="i" link  :to="$i18n.path(path)">
+              <v-list-item-icon>
+                <v-icon v-text="icon"></v-icon>
+              </v-list-item-icon>
+              <v-list-item-title v-text="getLinkName(title)"></v-list-item-title>
+            </v-list-item>
+        </v-list-group>
+
+
+        <v-list-item link :to="$i18n.path('buffs')">
+          <v-list-item-action>
+            <v-icon>mdi-arrow-right</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>{{ $t('links.buffs') }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+
+        <v-list-item link :to="$i18n.path('units')">
+          <v-list-item-action>
+            <v-icon>mdi-arrow-right</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>{{ $t('links.units') }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+
+
+        <v-list-item link :to="$i18n.path('buildings/storehouse')">
+          <v-list-item-action>
+            <v-icon>mdi-arrow-right</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>test</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar
-      app
-      color="indigo"
-      dark
-    >
+    <v-app-bar app color="indigo" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{ $t('layout.topBarTitle') }}</v-toolbar-title>
 
@@ -46,27 +113,13 @@
     </v-app-bar>
 
     <v-main>
-      <v-container
-        class="fill-height"
-        fluid
-      >
-        <v-row
-          align="center"
-          justify="center"
-        >
-          <v-col class="text-center">
-            <Nuxt />
-            <Snackbar />
-          </v-col>
-        </v-row>
+      <!-- <v-container fluid> -->
+      <v-container>
+        <Nuxt />
       </v-container>
     </v-main>
-    <v-footer
-      color="indigo"
-      app
-    >
+    <v-footer color="indigo" app>
       <span class="white--text">&copy; {{ new Date().getFullYear() }}</span>
-      <a @click="testBtn">testBtn</a>
     </v-footer>
   </v-app>
 </template>
@@ -74,11 +127,19 @@
 <script>
   import { auth } from "@/services/firebase";
   import Cookie from "js-cookie";
-  import Snackbar from '@/components/Snackbar'
 
   export default {
+    name: "default",
     data: () => ({
-      drawer: null
+      drawer: null,
+
+      specialists: [
+        ['Explorers', 'mdi-account-multiple-outline', 'specialists/explorers'],
+        ['Geologists', 'mdi-account-multiple-outline', 'specialists/geologists'],
+        ['Generals', 'mdi-account-multiple-outline', 'specialists/generals'],
+        ['Marshals', 'mdi-account-multiple-outline', 'specialists/marshals'],
+      ],
+
     }),
     asyncData(context) {
       return { project: 'nuxt' }
@@ -108,12 +169,18 @@
           await Cookie.remove("access_token");
           location.href = "/";
       },
-      testBtn() {
-        this.$store.commit('SET_ERROR', 'test error text')
+      getLinkName(name) {
+        return this.$t(`links.${name.toLowerCase()}`)
       }
     },
     components: {
-      Snackbar
+      // Snackbar
     }
   }
 </script>
+
+<style scoped>
+ul.v-breadcrumbs.theme--light {
+    padding: 0;
+}
+</style>

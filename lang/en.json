@@ -6,24 +6,49 @@
     "logout": "Logout",
     "en": "en",
     "ru": "ru",
-    "about": "About"
+    "about": "About",
+    "buildings": "Buildings",
+    "resources": "Resources",
+    "specialists": "Specialists",
+    "explorers": "Explorers",
+    "geologists": "Geologists",
+    "generals": "Generals",
+    "marshals": "Marshals",
+    "buffs": "Buffs",
+    "units": "Units"
   },
   "login": {
     "title": "Login",
     "description": "Enter the data in the form to enter the site",
     "placeholderPassword": "Password",
     "btnRegistration": "Registration",
+    "btnForgot": "Forgot password?",
     "btnLogin": "Login",
-    "btnGoHome": "Go Home"
+    "btnGoHome": "Go Home",
+    "errors": {
+      "auth/user-not-found": "Password or email is incorrect"
+    }
   },
   "register": {
     "title": "Register",
     "description": "Fill in the data for registration on the site",
-    "placeholderName": "Name",
+    "placeholderUsername": "Username",
     "placeholderPassword": "Password",
     "btnLogin": "Login",
     "btnRegistration": "Registration",
-    "btnGoHome": "Go Home"
+    "btnGoHome": "Go Home",
+    "errors": {
+      "auth/email-already-in-use": "User with this email already exists"
+    }
+  },
+  "forgot": {
+    "title": "Forgot password?",
+    "description": "Enter the email address to which the recovery letter will be sent",
+    "btnForgot": "Send",
+    "emailSendSuccess": "Email with instruction sended",
+    "errors": {
+      "auth/user-not-found": "Email don't found"
+    }
   },
   "home": {
     "title": "Home"
@@ -32,7 +57,237 @@
     "title": "About",
     "introduction": "This page is made to give you more informations."
   },
+  "buildings": {
+    "basicTypeDescription": "Эти знания доступны с самого начала игры и вы будете получать даступ к новым зданиям по мере повышения уровня",
+    "traderTypeDescription": "Эти здания можно получать только за кристалы у торговцца",
+    "title": "Buildings",
+    "labelConsumptionResource1Slug": "Consumption Resource 1",
+    "labelDestroyReturnResources1Slug": "Destroy Return Resources 1",
+    "labelRequiredLevel": "Required Level",
+    "labelNeedPatent": "Patent",
+    "labelCanMove": "Move",
+    "labelСanTrade": "Trade",
+    "labelMoveResource": "Move Resource",
+    "labelMoveResourcePremium": "Move Resource Premium Amount",
+    "labelUpgradeResourcePremium": "Upgrade Resource Premium Amount",
+    "labelReturnToStarMenu": "Return to Star Menu",
+    "labelPlacedOnWater": "Placed on Water",
+    "labelSizeX": "Size X",
+    "labelSizeY": "Size Y",
+    "titleStorageCapacities": "Storage Capacities",
+    "titlePopulation": "Population",
+    "labelPopulation": "Population",
+    "btnShowTable": "Show Table",
+    "btnHideTable": "Hide Table",
+    "end...": "...end"
+  },
+  "building": {
+    "production": "Production",
+    "consumption": "Consumption",
+    "timeProduction": "Time Production",
+    "tabComments": "Comments",
+    "tabImages": "Images",
+    "tabMoveCost": "Move Cost",
+    "tabBuildUpgrade": "Build & Upgrade",
+    "tabInformation": "Information",
+    "destroyReturnResources": "Destroy Return Resources",
+    "requiredLevel": "Required Level",
+    "returnToStarMenu": "Return to Star Menu",
+    "canMove": "Can Move",
+    "needPatent": "Need Patent",
+    "placedOnWater": "Placed on Water",
+    "size": "Size",
+    "constructionTime": "Construction Time",
+    "population": "Population",
+    "totalPopulation": "Total Population",
+    "end...": "...end",
+    "tavern": {
+      "specialist": "Specialist"
+    },
+    "provisionHouse": {
+      "buffs": "Buffs",
+      "deposits": "Deposits",
+      "timeProduction": "Time Production",
+      "effect": "Effect",
+      "result": "Result",
+      "end...": "...end"
+    },
+    "storehouse": {
+      "storageCapacities": "Storage Capacities",
+      "totalStorageCapacities": "Total Storage Capacities",
+      "end...": "...end"
+    }
+  },
+  "resources": {
+    "title": "Resources",
+    "addResource": "Add Resource"
+  },
+  "specialists": {
+    "title": "Specialists"
+  },
+  "explorers": {
+    "title": "Explorers",
+    "addExplorer": "Add Explorer",
+    "labelGameDescriptionEn": "Game Description En",
+    "labelGameDescriptionRu": "Game Description Ru",
+    "labelSpeed": "Speed",
+    "end...": "...end"
+  },
+  "geologists": {
+    "title": "Geologists",
+    "addGeologist": "Add Geologist",
+    "labelGameDescriptionEn": "Game Description En",
+    "labelGameDescriptionRu": "Game Description Ru",
+    "labelSpeed": "Speed",
+    "end...": "...end"
+  },
+  "generals": {
+    "title": "Generals",
+    "addGeneral": "Add General",
+    "labelGameDescriptionEn": "Game Description En",
+    "labelGameDescriptionRu": "Game Description Ru",
+    "labelGameExclaimEn": "Game Exclaim En",
+    "labelGameExclaimRu": "Game Exclaim Ru",
+    "labelSpeed": "Speed",
+    "labelHitPoints": "Hit points (HP)",
+    "labelAccuracy": "Accuracy",
+    "labelTravelTime": "Travel Time",
+    "labelUnitCapacity": "Unit Capacity",
+    "labelMinAttackDamage": "Min Attack Damage (AD)",
+    "labelMaxAttackDamage": "Max Attack Damage (AD)",
+    "labelInitiative": "Initiative",
+    "labelRecoveryTime": "Recovery Time",
+    "labelCombatRoundDuration": "Combat Round Duration",
+    "labelTraitName": "Trait Name",
+    "labelTraitImageUrl": "Trait Image Url",
+    "labelTraitText": "Trait Text",
+    "labelGarrisonImageUrl": "Garrison Image Url",
+    "titleCharacteristics": "Characteristics",
+    "titleAbilities": "Abilities",
+    "titleTrait": "Trait",
+    "end...": "...end"
+  },
+  "marshals": {
+    "title": "Marshals",
+    "addMarshal": "Add Marshal",
+    "labelGameDescriptionEn": "Game Description En",
+    "labelGameDescriptionRu": "Game Description Ru",
+    "labelGameExclaimEn": "Game Exclaim En",
+    "labelGameExclaimRu": "Game Exclaim Ru",
+    "labelSpeed": "Speed",
+    "labelTravelTime": "Travel Time",
+    "labelTravelTimeBack": "Travel Time Back",
+    "labelType": "Type",
+    "labelUnitCapacity": "Unit Capacity",
+    "labelGarrisonImageUrl": "Garrison Image Url",
+    "end...": "...end"
+  },
+  "buffs": {
+    "title": "Buffs",
+    "addBuff": "Add Buff",
+    "labelTarget": "Target",
+    "labelEffectType": "Effect Type",
+    "labelEffectName": "Effect Name",
+    "labelEffectValue": "Effect Value",
+    "titleEffectDuration": "Effect Duration",
+    "labelCurrentBuildings": "Current Buildings",
+    "titleProductionTime": "Production Time",
+    "labelButtonIconUrl": "Button Icon Url",
+    "labelButtonDescriptionEn": "Button Description En",
+    "labelButtonDescriptionRu": "Button Description Ru",
+    "labelCanTrade": "Can Trade",
+    "labelFrendBuff": "Frend Buff",
+    "labelAreaBuff": "Area Buff",
+    "labelButtonName": "Button Name",
+    "end...": "...end"
+  },
+  "labels": {
+    "slug": "Slug",
+    "nameEn": "Name En",
+    "nameRu": "Name Ru",
+    "weight": "Weight",
+    "descriptionEn": "Description En",
+    "descriptionRu": "Description Ru",
+    "gameDescriptionEn": "Game Description En",
+    "gameDescriptionRu": "Game Description Ru",
+    "requiredLevel": "Required Level",
+    "imageUrl": "Image Url",
+    "imageIconUrl": "Image Icon Url",
+    "typeList": "Type List",
+    "originList": "Origin List",
+    "seconds": "Seconds",
+    "minutes": "Minutes",
+    "hours": "Hours",
+    "days": "Days",
+    "amount": "Amount",
+    "consumptionResource": "Consumption Resource",
+    "productionResource": "Production Resource",
+    "moveResource": "Move Resource",
+    "upgradeResource": "Upgrade Resource",
+    "destroyReturnResource": "Destroy Return Resource",
+    "depositResource": "Deposit Resource",
+    "end...": "...end"
+  },
+  "units": {
+    "title": "Units",
+    "tabBarracks": "Barracks",
+    "labelInitiativeList": "Initiative List",
+    "labelAbilitiesList": "Abilities List",
+    "labelHitpoints": "Hitpoints",
+    "labelAccuracy": "Accuracy",
+    "labelMinDamage": "Min Damage",
+    "labelMaxDamage": "Max Damage",
+    "labelDamage": "Damage",
+    "labelStackSize": "Stack Size",
+    "labelExperiencePoints": "Experience Points",
+    "labelBonusVsUnit": "Bonus Vs Unit",
+    "labelBonusAmount": "Bonus Amount",
+    "end...": "...end"
+  },
+  "buttons": {
+    "add": "Add",
+    "edit": "Edit",
+    "addConsumptionResource": "Add Consumption Resource",
+    "end...": "...end"
+  },
+  "titles": {
+    "moveCost": "Move cost",
+    "upgradeCost": "Upgrade cost",
+    "destroyReturnResources": "Destroy Return Resources",
+    "constructionCost": "Construction Cost",
+    "production": "Production",
+    "moveBuilding": "Move Building",
+    "end...": "...end"
+  },
+  "tabs": {
+    "main": "Main",
+    "images": "Images",
+    "move": "Move",
+    "build": "Build",
+    "production": "Production",
+    "storageCapacities": "Storage Capacities",
+    "wheatfield": "Wheatfield",
+    "deposit": "Deposit",
+    "special": "Special",
+    "population": "Population",
+    "characteristics": "Characteristics",
+    "end...": "...end"
+  },
   "layout": {
     "topBarTitle": "Application"
+  },
+  "text": {
+    "yes": "Yes",
+    "no": "No",
+    "add": "Add",
+    "edit": "Edit",
+    "level": "Level",
+    "lvl": "lvl",
+    "name": "Name",
+    "deposit": "Deposit",
+    "amount": "Amount",
+    "resources": "Resources",
+    "gemsCost": "Gems Cost",
+    "end...": "...end"
   }
 }
